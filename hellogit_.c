@@ -15,7 +15,7 @@ int main()
 	}
 	else if(num == 3)
 	{
-		puts("Hello");
+		puts("Hello!!!");
 	}
 	return 0;
 }
