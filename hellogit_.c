@@ -13,5 +13,9 @@ int main()
 	{
 		puts("Hi, I'm hyunmin jeon.\nI'm a Hanyang Univ student.");
 	}
+	else if(num == 3)
+	{
+		puts("Hello");
+	}
 	return 0;
 }
