@@ -9,5 +9,9 @@ int main()
 	{
 		puts("jeonhyunmin");
 	}
+	else if(num ==2)
+	{
+		puts("Hi, I'm hyunmin jeon.\nI'm a Hanyang Univ student.");
+	}
 	return 0;
 }
