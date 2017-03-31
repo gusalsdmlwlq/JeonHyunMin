@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko"  xml:lang="ko">
+<meta http-equiv="Content-Type" Content="text/html; charset=utf-8" />
+<html>
+    <head>
+        <title>메모 리스트</title>
+        <style type="text/css">
+            daytext {position:relative; left:450px;}
+            addnote {position:relative; top:45px; left:80px;}
+            box {position:relative; top:145px; left:220px;}
+            box1 {background-color:silver; padding-top:30px; padding-bottom:30px; padding-left:200px; padding-right:200px; border:1px solid black;}
+            note {position:relative; left:220px;}
+        </style>
+        <SCRIPT LANGUAGE="JavaScript">
+            var day = location.href.split('?')[1]
+            document.write("<font color='blue' size='7'><daytext>"+day.split('.')[0] + "년 " + day.split('.')[1] + "월 " + day.split('.')[2] + "일"+"</daytext></font>")
+            function newnote(){ //새로운 메모 추가
+                alert("미구현")
+            }
+        </SCRIPT>
+    </head>
+    <body>
+        <br>
+        <box><box1><font size="5">새로운 메모를 작성하려면 클릭하세요.</font></box1></box>
+        <figure>
+            <a href='file:///C:/Users/jeon/noteapp/public/index.html'><img src="back.png" width="100" height="100" alt="뒤로가기"></a>
+            <addnote><img src="addnote.png" width="60" height="60" alt="메모추가"></a></addnote>
+            <button onclick="newnote();" style="background-color:transparent;width:820px;height:85px;position:relative;left:7px;top:55px"></button>
+        </figure>
+        <br><br>
+        <form action="http://www.html.am/html-codes/textboxes/submitted.cfm">
+            <note><textarea name="myTextBox" cols="120" rows="5">메모내용</textarea>
+            <br />
+            <input type="submit" />
+        </form>
+    </body>
+</html>
