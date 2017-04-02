@@ -79,6 +79,32 @@ public class DoublyLinkedlist {
 		return rdata;
 	}
 	
+	private Object remove_back(int index)
+	{
+		Node cur = tail;
+		if(index < 1 || index > this.size) //예외
+		{
+			return null;
+		}
+		if(index == size) //첫번째 데이터 제거
+		{
+			rdata = tail.prev.data;
+			tail.prev.prev.next = tail;
+			tail.prev = tail.prev.prev;
+			this.size--;
+			return rdata;
+		}
+		for(int i=size; i>index; i--) //그 이외의 데이터 제거
+		{
+			cur = cur.prev;
+		}
+		rdata = cur.prev.data;
+		cur.prev.prev.next = cur;
+		cur.prev = cur.prev.prev;
+		this.size--;
+		return rdata;
+	}
+	
 	private Object get(int index)
 	{
 		Node cur = head;
@@ -89,6 +115,21 @@ public class DoublyLinkedlist {
 		for(int i=0; i<index; i++)
 		{
 			cur = cur.next;
+		}
+		gdata = cur.data;
+		return gdata;
+	}
+	
+	private Object get_back(int index)
+	{
+		Node cur = tail;
+		if(index <= 0 || index > this.size) //예외
+		{
+			return null;
+		}
+		for(int i=size; i>index-1; i--)
+		{
+			cur = cur.prev;
 		}
 		gdata = cur.data;
 		return gdata;
@@ -105,6 +146,23 @@ public class DoublyLinkedlist {
 		for(int i=0; i<index; i++)
 		{
 			cur = cur.next;
+		}
+		predata = cur.data;
+		if(cur.data != null) cur.data = input; //빈 데이터는 set 불가
+		return predata;
+	}
+	
+	private Object set_back(int index, int input)
+	{
+		Node cur = tail;
+		Object predata;
+		if(index <= 0 || index > this.size) //예외
+		{
+			return null;
+		}
+		for(int i=size; i>index-1; i--)
+		{
+			cur = cur.prev;
 		}
 		predata = cur.data;
 		if(cur.data != null) cur.data = input; //빈 데이터는 set 불가
@@ -156,7 +214,8 @@ public class DoublyLinkedlist {
 				try
 				{
 					removeindex = Integer.parseInt(JOptionPane.showInputDialog("remove할 index를 입력하세요."));
-					removedata = list.remove(removeindex);
+					if(removeindex >= list.size/2) removedata = list.remove_back(removeindex);
+					else removedata = list.remove(removeindex);
 					System.out.println("remove : "+removedata);
 				}
 				catch(Exception e)
@@ -170,7 +229,8 @@ public class DoublyLinkedlist {
 				try
 				{
 					getindex = Integer.parseInt(JOptionPane.showInputDialog("get할 index를 입력하세요."));
-					getdata = list.get(getindex);
+					if(getindex >= list.size/2) getdata = list.get_back(getindex);
+					else getdata = list.get(getindex);
 					System.out.println("get : "+getdata);
 				}
 				catch(Exception e)
@@ -185,7 +245,8 @@ public class DoublyLinkedlist {
 				{
 					setindex = Integer.parseInt(JOptionPane.showInputDialog("set할 index를 입력하세요."));
 					setdata = Integer.parseInt(JOptionPane.showInputDialog("set할 data를 입력하세요."));
-					predata = list.set(setindex,setdata);
+					if(setindex >= list.size/2) predata = list.set_back(setindex,setdata);
+					else predata = list.set(setindex,setdata);
 					if(predata != null) System.out.println("set : "+predata+" -> "+setdata);
 					else System.out.println(setindex+" 번째 data가 없습니다.");
 				}
