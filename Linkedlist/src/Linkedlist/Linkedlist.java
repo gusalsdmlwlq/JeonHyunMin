@@ -1,193 +1,189 @@
-package SinglyLinkedlist;
+package Linkedlist;
 
 import javax.swing.JOptionPane;
 
-public class SinglyLinkedlist {
+public class Linkedlist {
+	int size;
 	Node head = new Node();
 	Node tail = new Node();
-	int size=0;
-	
 	public static class Node
 	{
 		Object data;
 		Node next;
-		public Node() {
-			this.next = null;
+		Node()
+		{
 			this.data = null;
+			this.next = null;
 		}
-		public Node(int data){
-			this(data, null);
+		Node(Object data)
+		{
+			this(data,null);
 		}
-		public Node(int data, Node next)
+		Node(Object data, Node next)
 		{
 			this.data = data;
 			this.next = next;
 		}
 	}
-	
-	private void add(int input)
+	private void add(int index, Object data)
 	{
 		Node cur = head;
-		Node addnode = new Node(input);
-		while(true)
+		Node addnode = new Node(data);
+		if(index > this.size)
 		{
-			if(head.next == tail || (cur == head && input <= (int)cur.next.data) || 
-					cur.next == tail ||
-					(cur != head && input >= (int)cur.data && input <= (int)cur.next.data))
-			{
-				addnode.next = cur.next;
-				cur.next = addnode;
-				break;
-			}
-			else
-			{
+			for(int i=0; i<size; i++)
 				cur = cur.next;
-			}
+			addnode.next = cur.next;
+			cur.next = addnode;
+		}
+		else if(index <= 0)
+		{
+			addnode.next = cur.next;
+			cur.next = addnode;
+		}
+		else
+		{
+			for(int i=0; i<index-1; i++)
+				cur = cur.next;
+			addnode.next = cur.next;
+			cur.next = addnode;
 		}
 		if(addnode.next == tail)
 			tail.next = addnode;
 		this.size++;
 	}
-	
+	private void addfirst(Object data)
+	{
+		Node addnode = new Node(data);
+		addnode.next = head.next;
+		head.next = addnode;
+		if(addnode.next == tail)
+			tail.next = addnode;
+		this.size++;
+	}
+	private void addlast(Object data)
+	{
+		Node addnode = new Node(data);
+		tail.next.next = addnode;
+		addnode.next = tail;
+		tail.next = addnode;
+		this.size++;
+	}
 	private Object remove(int index)
 	{
-		Object rdata;
 		Node cur = head;
-		if(index < 1 || index > this.size) //예외
+		Object removedata;
+		if(index <= 0 || index > size)
 		{
 			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
-		for(int i=0; i<index-1; i++)
+		else
 		{
-			cur = cur.next;
+			for(int i=0; i<index-1; i++)
+				cur = cur.next;
+			removedata = cur.next.data;
+			cur.next = cur.next.next;
+			this.size--;
+			return removedata;
 		}
-		rdata = cur.next.data;
-		cur.next = cur.next.next;
-		if(cur.next == tail)
-			tail.next = cur;
-		this.size--;
-		return rdata;
 	}
-	
 	private Object removefirst()
 	{
-		Object rdata;
+		Object removedata;
 		if(head.next == tail)
 			return null;
 		else
 		{
-			rdata = head.next.data;
+			removedata = head.next.data;
 			head.next = head.next.next;
 			if(head.next == tail)
 				tail.next = head;
 			this.size--;
-			return rdata;
+			return removedata;
 		}
 	}
-	
 	private Object removelast()
 	{
 		Node cur = head;
-		Object rdata;
+		Object removedata;
 		if(tail.next == head)
 			return null;
 		else
 		{
-			rdata = tail.next.data;
+			removedata = tail.next.data;
 			for(int i=0; i<size-1; i++)
 				cur = cur.next;
 			cur.next = tail;
 			tail.next = cur;
 			this.size--;
-			return rdata;
+			return removedata;
 		}
 	}
-	
 	private Object get(int index)
 	{
-		Object gdata;
 		Node cur = head;
-		if(index <= 0 || index > this.size) //예외
+		if(index <= 0 || index > size)
 		{
 			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
-		for(int i=0; i<index; i++)
+		else
 		{
-			cur = cur.next;
+			for(int i=0; i<index; i++)
+				cur = cur.next;
+			return cur.data;
 		}
-		gdata = cur.data;
-		return gdata;
 	}
-	
-	private Object set(int index, int input)
+	private Object set(int index, Object data)
 	{
 		Node cur = head;
-		Object predata;
-		if(index <= 0 || index > this.size) //예외
+		Object predata = null;
+		if(index <= 0 || index > size)
 		{
 			System.out.println("데이터 범위를 벗어났습니다.");
-			return  null;
+			return null;
 		}
-		for(int i=0; i<index; i++)
+		else
 		{
-			cur = cur.next;
-		}
-		predata = cur.data;
-		if(cur.data != null) cur.data = input; //빈 데이터는 set 불가
-		return predata;
-	}
-	
-	private void set_(int index, int input) //set 후에 오름차순 정렬
-	{
-		Node cur = head;
-		if(index <= 0 || index > this.size) //예외
-		{
-			System.out.println("데이터 범위를 벗어났습니다.");
-			return;
-		}
-		for(int i=0; i<index; i++)
-		{
-			cur = cur.next;
-		}
-		if(cur.data != null) //빈 데이터는 set 불가
-		{
-			this.remove(index);
-			this.add(input);
+			for(int i=0; i<index-1; i++)
+				cur = cur.next;
+			predata = cur.next.data;
+			cur.next.data = data;
+			return predata;
 		}
 	}
-	
 	private void print()
 	{
 		Node cur = head;
 		for(int i=0; i<this.size; i++)
 		{
 			cur = cur.next;
-			if(cur.data != null) System.out.print(cur.data+" "); //빈 데이터는 print x
+			System.out.print(cur.data+" ");
 		}
 		System.out.println("");
 	}
-	
 	public static void main(String[] args)
 	{
 		boolean exit = true;
-		SinglyLinkedlist list = new SinglyLinkedlist();
+		Linkedlist list = new Linkedlist();
 		String menu;
 		list.head.next = list.tail;
 		list.tail.next = list.head;
-		System.out.println("SinglyLinkedlist");
+		System.out.println("Linkedlist");
 		while(exit)
 		{
 			menu = JOptionPane.showInputDialog("(1~6를 입력하세요.)\n1.add\n2.remove\n3.get\n4.set\n5.print\n6.exit");
 			switch(menu)
 			{
 			case "1": //add
-				int inputdata;
+				int inputindex;
+				Object inputdata;
 				try
 				{
-					inputdata = Integer.parseInt(JOptionPane.showInputDialog("add할 숫자를 입력하세요."));
-					list.add(inputdata);
+					inputindex = Integer.parseInt(JOptionPane.showInputDialog("add할 위치를 입력하세요."));
+					inputdata = (Object)Integer.parseInt(JOptionPane.showInputDialog("add할 데이터를 입력하세요."));
+					list.add(inputindex,inputdata);
 					System.out.println("add : "+inputdata);
 				}
 				catch(Exception e)
@@ -232,7 +228,6 @@ public class SinglyLinkedlist {
 					setdata = Integer.parseInt(JOptionPane.showInputDialog("set할 data를 입력하세요."));
 					predata = list.set(setindex,setdata);
 					if(predata != null) System.out.println("set : "+predata+" -> "+setdata);
-					else System.out.println(setindex+" 번째 data가 없습니다.");
 				}
 				catch(Exception e)
 				{
@@ -249,4 +244,3 @@ public class SinglyLinkedlist {
 		}
 	}
 }
-

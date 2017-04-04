@@ -3,9 +3,8 @@ package DoublyLinkedlist;
 import javax.swing.JOptionPane;
 
 public class DoublyLinkedlist {
-	Object rdata;
-	Object gdata;
-	static Node head, tail;
+	Node head = new Node();
+	Node tail = new Node();
 	int size=0;
 	
 	public static class Node
@@ -55,20 +54,14 @@ public class DoublyLinkedlist {
 	
 	private Object remove(int index)
 	{
+		Object rdata;
 		Node cur = head;
 		if(index < 1 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
-		if(index == 1) //첫번째 데이터 제거
-		{
-			rdata = head.next.data;
-			head.next = head.next.next;
-			head.next.next.prev = head;
-			this.size--;
-			return rdata;
-		}
-		for(int i=0; i<index-1; i++) //그 이외의 데이터 제거
+		for(int i=0; i<index-1; i++)
 		{
 			cur = cur.next;
 		}
@@ -81,20 +74,14 @@ public class DoublyLinkedlist {
 	
 	private Object remove_back(int index)
 	{
+		Object rdata;
 		Node cur = tail;
 		if(index < 1 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
-		if(index == size) //첫번째 데이터 제거
-		{
-			rdata = tail.prev.data;
-			tail.prev.prev.next = tail;
-			tail.prev = tail.prev.prev;
-			this.size--;
-			return rdata;
-		}
-		for(int i=size; i>index; i--) //그 이외의 데이터 제거
+		for(int i=size; i>index; i--)
 		{
 			cur = cur.prev;
 		}
@@ -107,9 +94,11 @@ public class DoublyLinkedlist {
 	
 	private Object get(int index)
 	{
+		Object gdata;
 		Node cur = head;
 		if(index <= 0 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
 		for(int i=0; i<index; i++)
@@ -122,9 +111,11 @@ public class DoublyLinkedlist {
 	
 	private Object get_back(int index)
 	{
+		Object gdata;
 		Node cur = tail;
 		if(index <= 0 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
 		for(int i=size; i>index-1; i--)
@@ -141,6 +132,7 @@ public class DoublyLinkedlist {
 		Object predata;
 		if(index <= 0 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
 		for(int i=0; i<index; i++)
@@ -158,6 +150,7 @@ public class DoublyLinkedlist {
 		Object predata;
 		if(index <= 0 || index > this.size) //예외
 		{
+			System.out.println("데이터 범위를 벗어났습니다.");
 			return null;
 		}
 		for(int i=size; i>index-1; i--)
@@ -185,8 +178,6 @@ public class DoublyLinkedlist {
 		boolean exit = true;
 		DoublyLinkedlist list = new DoublyLinkedlist();
 		String menu;
-		list.head = new Node();
-		list.tail = new Node();
 		list.head.next = list.tail;
 		list.tail.prev = list.head;
 		System.out.println("DoublyLinkedlist");
@@ -248,7 +239,6 @@ public class DoublyLinkedlist {
 					if(setindex >= list.size/2) predata = list.set_back(setindex,setdata);
 					else predata = list.set(setindex,setdata);
 					if(predata != null) System.out.println("set : "+predata+" -> "+setdata);
-					else System.out.println(setindex+" 번째 data가 없습니다.");
 				}
 				catch(Exception e)
 				{
