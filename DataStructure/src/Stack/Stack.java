@@ -48,7 +48,7 @@ public class Stack extends LinkedList.LinkedList {
 				Object inputdata;
 				try
 				{
-					inputdata = (Object)Integer.parseInt(JOptionPane.showInputDialog("push할 데이터를 입력하세요."));
+					inputdata = Integer.parseInt(JOptionPane.showInputDialog("push할 데이터를 입력하세요."));
 					stack.push(inputdata);
 					System.out.println("push : "+inputdata);
 				}

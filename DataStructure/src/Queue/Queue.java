@@ -50,7 +50,7 @@ public class Queue extends LinkedList.LinkedList{
 				Object inputdata;
 				try
 				{
-					inputdata = (Object)Integer.parseInt(JOptionPane.showInputDialog("enqueue할 데이터를 입력하세요."));
+					inputdata = Integer.parseInt(JOptionPane.showInputDialog("enqueue할 데이터를 입력하세요."));
 					queue.enqueue(inputdata);
 					System.out.println("enqueue : "+inputdata);
 				}

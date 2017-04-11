@@ -3,24 +3,44 @@ package Stack;
 import javax.swing.JOptionPane;
 
 public class compute {
+	public static double operation(double num1, double num2, String operator)
+	{
+		switch(operator)
+		{
+		case "+":
+			return num1+num2;
+		case "-":
+			return num1-num2;
+		case "*":
+			return num1*num2;
+		case "/":
+			if(num2 == 0) return 0;
+			return num1/num2;
+		default:
+			return 0;
+		}
+	}
 	public static void main(String args[])
 	{
 		Stack operands = new Stack();
 		Stack operators = new Stack();
-		Stack compute = new Stack();
 		Object operand = null;
 		Object operator = null;
-		int opers;
-		int result = 0;
-		String result_str = "";
+		double temp = 0;
+		String result = "";
 		while(true) //수식 입력
 		{
 			while(true) //피연산자
 			{
 				try
 				{
-					operand = (Object)Integer.parseInt(JOptionPane.showInputDialog("숫자를 입력하세요."));
-					operands.push((Object)operand);
+					operand = (double)Integer.parseInt(JOptionPane.showInputDialog("숫자를 입력하세요."));
+					operands.push(operand);
+					System.out.print("operands : ");
+					operands.print();
+					System.out.print("operators : ");
+					operators.print();
+					result += operand;
 					break;
 				}
 				catch(Exception e)
@@ -37,52 +57,67 @@ public class compute {
 					System.out.println("<Error>연산자(+,-,*,/,=)를 입력하세요.");
 					continue;
 				}
-				operators.push(operator);
+				result += operator;
+				switch((String)operator)
+				{
+				case "+":
+					while(operators.top() != null)
+					{
+						temp = (double)operands.pop();
+						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						operators.pop();
+					}
+					operators.push(operator);
+					break;
+				case "-":
+					while(operators.top() != null)
+					{
+						temp = (double)operands.pop();
+						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						operators.pop();
+					}
+					operators.push(operator);
+					break;
+				case "*":
+					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
+					{
+						temp = (double)operands.pop();
+						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						operators.pop();
+					}
+					operators.push(operator);
+					break;
+				case "/":
+					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
+					{
+						temp = (double)operands.pop();
+						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						operators.pop();
+					}
+					operators.push(operator);
+					break;
+				case "=":
+					while(operators.top() != null)
+					{
+						temp = (double)operands.pop();
+						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						operators.pop();
+					}
+					operators.push(operator);
+					break;
+				}
+				System.out.print("operands : ");
+				operands.print();
+				System.out.print("operators : ");
+				operators.print();
 				break;
 			}
-			if(operator.equals("="))
-				break;
-		}
-		opers = operands.size();
-		for(int i=0; i<opers; i++)
-		{
-			compute.push(operators.pop());
-			System.out.print("Operators ");
-			operators.print();
-			System.out.print("Operands ");
-			operands.print();
-			compute.push(operands.pop());
-			System.out.print("Operators ");
-			operators.print();
-			System.out.print("Operands ");
-			operands.print();
-		}
-		result = (int)compute.pop();
-		result_str += result;
-		while(true)
-		{
-			operator = compute.pop();
-			result_str += operator;
-			operand = compute.pop();
-			if(operand != null) result_str += operand;
-			switch((String)operator)
+			if(operators.top().equals("="))
 			{
-			case "+":
-				result += (int)operand;
+				operators.pop();
 				break;
-			case "-":
-				result -= (int)operand;
-				break;
-			case "*":
-				result *= (int)operand;
-				break;
-			case "/":
-				result /= (int)operand;
-				break;
-			case "=":
-				System.out.println("결과 : "+result_str+result);
-				return;
 			}
 		}
+		System.out.println(result+" : "+operands.pop());
 	}
 }

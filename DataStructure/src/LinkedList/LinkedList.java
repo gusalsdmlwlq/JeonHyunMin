@@ -186,7 +186,7 @@ public class LinkedList {
 				try
 				{
 					inputindex = Integer.parseInt(JOptionPane.showInputDialog("add할 위치를 입력하세요."));
-					inputdata = (Object)Integer.parseInt(JOptionPane.showInputDialog("add할 데이터를 입력하세요."));
+					inputdata = Integer.parseInt(JOptionPane.showInputDialog("add할 데이터를 입력하세요."));
 					list.add(inputindex,inputdata);
 					System.out.println("add : "+inputdata);
 				}
