@@ -61,7 +61,7 @@ public class compute {
 				switch((String)operator)
 				{
 				case "+":
-					while(operators.top() != null)
+					if(operators.top() != null)
 					{
 						temp = (double)operands.pop();
 						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
@@ -70,7 +70,7 @@ public class compute {
 					operators.push(operator);
 					break;
 				case "-":
-					while(operators.top() != null)
+					if(operators.top() != null)
 					{
 						temp = (double)operands.pop();
 						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
@@ -79,7 +79,7 @@ public class compute {
 					operators.push(operator);
 					break;
 				case "*":
-					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
+					if(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
 						temp = (double)operands.pop();
 						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
@@ -88,7 +88,7 @@ public class compute {
 					operators.push(operator);
 					break;
 				case "/":
-					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
+					if(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
 						temp = (double)operands.pop();
 						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
