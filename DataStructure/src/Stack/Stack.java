@@ -2,7 +2,7 @@ package Stack;
 
 import javax.swing.JOptionPane;
 
-public class Stack extends LinkedList.LinkedList {
+public class Stack extends LinkedList.LinkedList{
 	Stack()
 	{
 		this.head.next = this.tail;

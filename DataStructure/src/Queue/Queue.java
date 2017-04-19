@@ -2,8 +2,6 @@ package Queue;
 
 import javax.swing.JOptionPane;
 
-import Stack.Stack;
-
 public class Queue extends LinkedList.LinkedList{
 	Queue()
 	{
