@@ -5,6 +5,7 @@
  *
  */
 // Get element by ID in a cleaner way
+var keywords;
 function select(id) {
   return document.getElementById(id);
 }
@@ -31,9 +32,10 @@ function get() {
 }
 
 // Check browser compatability
-function checkCompatability() {
+function checkCompatability(keyword) {
+    keywords = keyword;
   if (typeof(Storage) !== "undefined") {
-    loadNotes();
+    loadNotes(keywords);
   } else {
       alert("Sorry, your web browser does not support local storage.");
   }
@@ -63,30 +65,33 @@ function saveNewNote() {
   var content = select("content").value;
   var time = new Date();
   var note = {
-      "title": title,
-      "content": content,
-      "time": time.getFullYear()+"-"+(time.getMonth()+1)+"-"+time.getDate()+" "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds()
+    "title": title,
+    "content": content,
+    "time": time.getFullYear()+"-"+(time.getMonth()+1)+"-"+time.getDate()+" "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds()
   }
   save(note);
   select("action").innerHTML = "";
-  loadNotes();
+  loadNotes(keywords);
 }
 
-function loadNotes() {
-  var data = get();
+function loadNotes(keyword) {
+    var data = get();
   if (data != "") {
     select("notes").innerHTML = "";
     for (i = 0; i < data.length; i++) {
-      html = "";
-      html += "<div class=\"note\">";
-      html += "<h3>" + data[i].title + "</h3>\n";
-      html += "<p>" + data[i].content + "</p>\n";
-      html += "<p>" + data[i].time + "</p>\n";
-      html += "<button onclick=\"editNote(" + i.toString() + ");\">Edit note [ .. ]</button>\n";
-      html += "<button class=\"red\" onclick=\"deleteNote(" + i.toString() + ")\">Delete note [ - ]</button>\n";
-      html += "</div>\n";
+        if (data[i].title.search(keyword) > -1)
+        {
+            html = "";
+            html += "<div class=\"note\">";
+            html += "<h3>" + data[i].title + "</h3>\n";
+            html += "<p>" + data[i].content + "</p>\n";
+            html += "<p>" + data[i].time + "</p>\n";
+            html += "<button onclick=\"editNote(" + i.toString() + ");\">Edit note [ .. ]</button>\n";
+            html += "<button class=\"red\" onclick=\"deleteNote(" + i.toString() + ")\">Delete note [ - ]</button>\n";
+            html += "</div>\n";
 
-      select("notes").innerHTML += html;
+            select("notes").innerHTML += html;
+        }
     }
   } else {
     select("notes").innerHTML = "";
@@ -117,7 +122,7 @@ function deleteNote(id) {
     }
   }
   localStorage.setItem("data", JSON.stringify(toWrite));
-  loadNotes();
+  loadNotes(keywords);
 }
 
 // Edit note

@@ -12,11 +12,7 @@
 <body>
     <a href='./index.html'><img src="back.png" width="100" height="100" alt="뒤로가기"></a>
   <div class="header">
-    <h1><span class="text-green"></span>노트</h1>
-  </div>
-  <div class="section" style="margin-left: 1rem; margin-right: 1rem;">
-    <button onclick="newNote();">새 메모</button>
-    <button onclick="exportNotes();">메모 표시</button>
+    <h1><span class="text-green"></span>검색 목록</h1>
   </div>
   <div class="section" style="padding-top: 0rem;">
     <div id="notes">
@@ -32,9 +28,11 @@
     <strong>Copyright (c) <span class="copyright-year">2017</span></strong> | Maximilian Wendel Technologies
   </div>
 </body>
-<script src="./app.js">
+<script src="./search.js">
 </script>
 <script>
-  checkCompatability();
+    var keyword = location.href;
+    var real = decodeURI(keyword);
+    checkCompatability(real.split("search=")[1]);
 </script>
 </html>

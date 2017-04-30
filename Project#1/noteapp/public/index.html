@@ -14,7 +14,7 @@ A:hover {text-decoration:none; color:'ff9900'}
 </style>
 <style type="text/css">
     #searchwindow {position:fixed; left:433px;}
-    box {background-color:silver; margin-left:785px; padding:3px; padding-left:10px; padding-right:10px; border:1px solid black;}
+    box {margin-left:785px; padding:3px; padding-left:10px; padding-right:10px; solid black;}
     box1 {background-color:yellow; margin-left:425px; padding:10px; padding-left:152px; padding-right:153px; border:1px solid black;}
 </style>
 <link rel="STYLESHEET" type="text/css" href="board_style.css">
@@ -60,7 +60,7 @@ A:hover {text-decoration:none; color:'ff9900'}
   calStr+="<td align=center><font size='5'>"
   }
 var days = year + "." + (month+1) + "." + dayCount
-calStr += "<a href='file:///C:/Users/jeon/noteapp/public/notelist.html?"+days+"'>" // 링크설정
+calStr += "<a href='./notelist.html?"+days+"'>" // 링크설정
   calStr+=dayCount++   // 날짜
   calStr+="</a>"
 if (dayCount == nowd && month == now.getMonth() && year == 2017) { //오늘 날짜
@@ -82,11 +82,14 @@ if (dayCount == nowd && month == now.getMonth() && year == 2017) { //오늘 날�
 <body>
 <SPAN ID=calendar STYLE="position:relative;"></SPAN>
 <script language="JavaScript" type="text/JavaScript">
-showCalendar(nowd,nowm,nowy);
+    showCalendar(nowd, nowm, nowy);
 </script>
-    <input type="text" size="49" name="search" border="5" id="searchwindow" value=""/>
-    <box>검색</box><br>
+    <form action="./searchlist.html" method="GET" name="" accept-charset="utf-8">
+        <input type="text" size="49" name="search" border="5" id="searchwindow" value="">
+        <box><input type="submit" value="검색"></box>
+    </form>
     <br>
-    <box1><a href='file:///C:/Users/jeon/noteapp/public/lunch.html'>점심 메뉴 뽑기</box1>
+    <br>
+    <box1><a href='./lunch.html'>점심 메뉴 뽑기</box1>
 </body>
 </html>
