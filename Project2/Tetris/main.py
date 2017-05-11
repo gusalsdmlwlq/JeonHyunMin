@@ -1,65 +1,85 @@
-"""
- Sample Python/Pygame Programs
- Simpson College Computer Science
- http://programarcadegames.com/
- http://simpson.edu/computer-science/
+#!/usr/bin/python3
 
- Explanation video: http://youtu.be/4YqIKncMJNs
- Explanation video: http://youtu.be/ONAK8VZIcI4
- Explanation video: http://youtu.be/_6c4o41BIms
-"""
-
+import sys
 import pygame
 
-# Define some colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+import blocks
+import game
 
-# Call this function so the Pygame library can initialize itself
-pygame.init()
+tetris = game.Game()
 
-# Create an 800x600 sized screen
-screen = pygame.display.set_mode([800, 600])
+# Block colors
+colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
+    5: (0, 255, 255), 6: (255, 0, 255), 7: (255,255,255)}
 
-# This sets the name of the window
-pygame.display.set_caption('CMSC 150 is cool')
+def main():
+    block = blocks.Block6()
 
-clock = pygame.time.Clock()
+    # Initialize the screen
+    pygame.init()
+    screen = pygame.display.set_mode((500, 500))
+    pygame.display.set_caption('Tetris')
 
-# Before the loop, load the sounds:
-#click_sound = pygame.mixer.Sound("laser5.ogg")
+    # A tetris tile
+    rect = pygame.Surface((25, 25)).convert()
 
-# Set positions of graphics
-background_position = [0, 0]
+    gameMap = initGameMap()
 
-# Load and set up graphics.
-background_image = pygame.image.load("nUKdNl.jpg").convert()
-player_image = pygame.image.load("pencil.png").convert()
-player_image.set_colorkey(BLACK)
+    lastTick = pygame.time.get_ticks()
+    #i = 0
+    while 1:
+        newTick = pygame.time.get_ticks()
+        diff = newTick - lastTick
+        lastTick = newTick
+        update(diff)
+        #render()
 
-done = False
+        screen.fill((0, 0, 0))
 
-while not done:
+        drawBlock(screen, rect, tetris.getGameMap(), (0, 0))
+        drawBlock(screen, rect, tetris.getBlock().getRotatedShape(),tetris.getPosition())
+
+        pygame.display.flip()
+        pygame.time.wait(10)
+        #i += 1
+        #if i % 100 == 0:
+        #    print(i)
+
+
+def update(time):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            click_sound.play()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                tetris.moveLeft()
+            elif event.key == pygame.K_RIGHT:
+                tetris.moveRight()
+            elif event.key == pygame.K_UP:
+                tetris.rotate()
+    tetris.update(time)
 
-    # Copy image to screen:
-    screen.blit(background_image, background_position)
 
-    # Get the current mouse position. This returns the position
-    # as a list of two numbers.
-    player_position = pygame.mouse.get_pos()
-    x = player_position[0]
-    y = player_position[1]
+def render():
+    pass
 
-    # Copy image to screen:
-    screen.blit(player_image, [x, y])
 
-    pygame.display.flip()
+def initGameMap():
+    gameMap = []
+    for y in range(20):
+        gameMap.append([])
+        for x in range(20):
+            gameMap[y].append(0)
+    return gameMap
 
-    clock.tick(60)
 
-pygame.quit()
+def drawBlock(screen, rect, shape, position):
+    for y in range(len(shape)):
+        for x in range(len(shape[0])):
+            if not shape[y][x] == 0:
+                rect.fill(colors[shape[y][x]])
+                screen.blit(rect, (25 * (x + position[0]), 25 * (y + position[1])))
+
+
+if __name__ == '__main__':
+    main()
