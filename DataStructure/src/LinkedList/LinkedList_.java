@@ -1,7 +1,7 @@
 package LinkedList;
 
 import javax.swing.JOptionPane;
-
+//(1)(=head)->(2)->...->()(=tail)
 public class LinkedList_<E> {
 	public int size=0;
 	public Node head;
@@ -20,12 +20,12 @@ public class LinkedList_<E> {
 			this.data = null;
 			this.next = null;
 		}
-		Node(E data)
+		public Node(E data)
 		{
 			this.data = data;
 			this.next = null;
 		}
-		Node(E data,Node next)
+		public Node(E data,Node next)
 		{
 			this.data = data;
 			this.next = next;
@@ -100,6 +100,13 @@ public class LinkedList_<E> {
 				tail = curnode;
 		}
 		size--;
+		if(size==0)
+		{
+			head.data = null;
+			head.next = null;
+			tail.data = null;
+			tail.next = null;
+		}
 		return removenode.data;
 	}
 	public E removefirst()
@@ -110,6 +117,13 @@ public class LinkedList_<E> {
 		removedata = head.data;
 		head = head.next;
 		size--;
+		if(size==0)
+		{
+			head.data = null;
+			head.next = null;
+			tail.data = null;
+			tail.next = null;
+		}
 		return removedata;
 	}
 	public E removelast()
@@ -123,6 +137,13 @@ public class LinkedList_<E> {
 			curnode = curnode.next;
 		tail = curnode;
 		size--;
+		if(size==0)
+		{
+			head.data = null;
+			head.next = null;
+			tail.data = null;
+			tail.next = null;
+		}
 		return removedata;
 	}
 	public E get(int index)

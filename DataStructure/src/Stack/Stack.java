@@ -2,11 +2,11 @@ package Stack;
 
 import javax.swing.JOptionPane;
 
-public class Stack<E> extends LinkedList.LinkedList_<E>{
+public class Stack<E> extends LinkedList.LinkedList<E>{
 	public Stack()
 	{
-		this.head = new Node();
-		this.tail = new Node();
+		this.head.next = tail;
+		this.tail.next = head;
 	}
 
 	public void push(E data)
@@ -21,7 +21,7 @@ public class Stack<E> extends LinkedList.LinkedList_<E>{
 	
 	public E top()
 	{
-		return tail.data;
+		return tail.next.data;
 	}
 	
 	public int size()

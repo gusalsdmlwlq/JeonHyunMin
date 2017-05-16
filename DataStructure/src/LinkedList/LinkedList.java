@@ -1,7 +1,7 @@
 package LinkedList;
 
 import javax.swing.JOptionPane;
-
+//head->(1)->(2)->...()<->tail
 public class LinkedList<E> {
 	public int size;
 	public Node head = new Node();

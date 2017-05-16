@@ -22,10 +22,10 @@ public class compute {
 	}
 	public static void main(String args[])
 	{
-		Stack operands = new Stack();
-		Stack operators = new Stack();
-		Object operand = null;
-		Object operator = null;
+		Stack<Double> operands = new Stack<Double>();
+		Stack<String> operators = new Stack<String>();
+		double operand;
+		String operator = null;
 		double temp = 0;
 		String result = "";
 		while(true) //수식 입력
@@ -58,13 +58,13 @@ public class compute {
 					continue;
 				}
 				result += operator;
-				switch((String)operator)
+				switch(operator)
 				{
 				case "+":
 					while(operators.top() != null)
 					{
-						temp = (double)operands.pop();
-						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						temp = operands.pop();
+						operands.push(operation(operands.pop(),temp,operators.top()));
 						operators.pop();
 					}
 					operators.push(operator);
@@ -72,8 +72,8 @@ public class compute {
 				case "-":
 					while(operators.top() != null)
 					{
-						temp = (double)operands.pop();
-						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						temp = operands.pop();
+						operands.push(operation(operands.pop(),temp,operators.top()));
 						operators.pop();
 					}
 					operators.push(operator);
@@ -81,8 +81,8 @@ public class compute {
 				case "*":
 					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
-						temp = (double)operands.pop();
-						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						temp = operands.pop();
+						operands.push(operation(operands.pop(),temp,operators.top()));
 						operators.pop();
 					}
 					operators.push(operator);
@@ -90,8 +90,8 @@ public class compute {
 				case "/":
 					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
-						temp = (double)operands.pop();
-						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						temp = operands.pop();
+						operands.push(operation(operands.pop(),temp,operators.top()));
 						operators.pop();
 					}
 					operators.push(operator);
@@ -99,8 +99,8 @@ public class compute {
 				case "=":
 					while(operators.top() != null)
 					{
-						temp = (double)operands.pop();
-						operands.push(operation((double)operands.pop(),temp,(String)operators.top()));
+						temp = operands.pop();
+						operands.push(operation(operands.pop(),temp,operators.top()));
 						operators.pop();
 					}
 					operators.push(operator);
