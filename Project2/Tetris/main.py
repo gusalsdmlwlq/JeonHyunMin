@@ -17,7 +17,7 @@ def main():
 
     # Initialize the screen
     pygame.init()
-    screen = pygame.display.set_mode((500, 500))
+    screen = pygame.display.set_mode((800, 500))
     pygame.display.set_caption('Tetris')
 
     # A tetris tile

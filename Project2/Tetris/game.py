@@ -21,13 +21,13 @@ class Game:
         return gameMap
 
     def __makeRandomBlock(self):
-        rand = random.randint(1, 6)
+        rand = random.randint(1, 7)
         if rand == 1:
-            return blocks.Block4()
+            return blocks.Block1()
         elif rand == 2:
-            return blocks.Block4()
+            return blocks.Block2()
         elif rand == 3:
-            return blocks.Block4()
+            return blocks.Block3()
         elif rand == 4:
             return blocks.Block4()
         elif rand == 5:
@@ -72,11 +72,26 @@ class Game:
                 if shapeValue and (x2<=-1 or x2>=20 or y2>=20):
                     return True
         return False
+    def lineclear(self,line):
+        for x in range(0,20):
+            self._gameMap[line][x] = 0
+        for y in range(0,line):
+            for z in range(0,20):
+                self._gameMap[line-y][z] = self._gameMap[line-y-1][z]
+    def linesclear(self):
+        for y in range(0,20):
+            x = 0
+            while x<20:
+                if self._gameMap[y][x] == 0:
+                    break
+                x += 1
+            if x == 20:
+                self.lineclear(y)
     def update(self, time):
         self._timeCounter += time
-        if self._timeCounter < 200:  # Only move down block every 1 second
+        if self._timeCounter < 500:  # Only move down block every 1 second
             return
-        self._timeCounter -= 200
+        self._timeCounter -= 500
 
         self._position[1] += 1  # Move down block
 
@@ -89,6 +104,7 @@ class Game:
             self.__addBlockToGameMap()
             self._position = [10, 0]
             self._currentBlock = self.__makeRandomBlock()
+        self.linesclear()
 
     def rotate(self):
         self._currentBlock.rotateCounterclockwise()
@@ -110,13 +126,13 @@ class Game:
     def moveLeft(self):
         if True:#self._position[0]:
             self._position[0] -= 1
-            if self.__doesBlockCollidewithwall():
+            if self.__doesBlockCollidewithwall() or self.__doesBlockCollide():
                 self._position[0] += 1
 
     def moveRight(self):
         if True:#self._position[0] + self._currentBlock.getWidth() < Game.WIDTH:
             self._position[0] += 1
-            if self.__doesBlockCollidewithwall():
+            if self.__doesBlockCollidewithwall() or self.__doesBlockCollide():
                 self._position[0] -= 1
 
     def getPosition(self):
