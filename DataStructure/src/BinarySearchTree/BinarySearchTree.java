@@ -277,23 +277,23 @@ public class BinarySearchTree<E> {
 				curnode = n.right;
 			}
 		}
-		
 	}
 	public static void main(String[] args)
 	{
 		BinarySearchTree<Object> tree = new BinarySearchTree<Object>();
-		tree.put(5,5);
-		tree.put(2,2);
-		tree.put(4,4);
-		tree.put(1,1);
-		tree.put(3,3);
-		tree.put(6,6);
-		tree.put(7,7);
-		tree.put(0,0);
+		tree.put(5,"five");
+		tree.put(2,"two");
+		tree.put(4,"four");
+		tree.put(1,"one");
+		tree.put(3,"three");
+		tree.put(6,"six");
+		tree.put(7,"seven");
+		tree.put(0,"zero");
 		tree.remove(5);
 		tree.remove(0);
 		tree.printtree();
-		//tree.inordertraversal(tree.root);
+		System.out.println();
+		tree.inordertraversal(tree.root);
 		System.out.println(tree.floorentry(5).value);
 	}
 }

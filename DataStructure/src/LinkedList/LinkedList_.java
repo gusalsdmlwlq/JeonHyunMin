@@ -13,9 +13,9 @@ public class LinkedList_<E> {
 	}
 	public class Node
 	{
-		E data;
-		Node next;
-		Node()
+		public E data;
+		public Node next;
+		public Node()
 		{
 			this.data = null;
 			this.next = null;
@@ -35,6 +35,11 @@ public class LinkedList_<E> {
 	{
 		Node curnode = head;
 		Node addnode = new Node(data);
+		if(size==0)
+		{
+			head = addnode;
+			tail = addnode;
+		}
 		if(index > size)
 		{
 			for(int i=0; i<size-1; i++)
@@ -58,11 +63,21 @@ public class LinkedList_<E> {
 	}
 	public void addfirst(E data)
 	{
-		add(1,data);
+		Node addnode = new Node(data);
+		addnode.next = head;
+		head = addnode;
+		if(size==0)
+			tail = addnode;
+		size++;
 	}
 	public void addlast(E data)
 	{
-		add(this.size+1,data);
+		Node addnode = new Node(data);
+		tail.next = addnode;
+		tail = addnode;
+		if(size==0)
+			head = addnode;
+		size++;
 	}
 	public E remove(int index)
 	{
@@ -89,11 +104,26 @@ public class LinkedList_<E> {
 	}
 	public E removefirst()
 	{
-		return remove(1);
+		if(size == 0)
+			return null;
+		E removedata;
+		removedata = head.data;
+		head = head.next;
+		size--;
+		return removedata;
 	}
 	public E removelast()
 	{
-		return remove(size);
+		if(size == 0)
+			return null;
+		Node curnode = head;
+		E removedata;
+		removedata = tail.data;
+		for(int i=0; i<size-2; i++)
+			curnode = curnode.next;
+		tail = curnode;
+		size--;
+		return removedata;
 	}
 	public E get(int index)
 	{
