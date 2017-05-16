@@ -1,11 +1,13 @@
 import random
 import blocks
 import sys
+import time
 
 class Game:
 
     WIDTH = 20
     HEIGHT = 20
+    speed = 1
     def __init__(self):
         self._gameMap = self.__initGameMap()
         self._currentBlock = self.__makeRandomBlock()
@@ -21,6 +23,7 @@ class Game:
         return gameMap
 
     def __makeRandomBlock(self):
+        time.sleep(0.5)
         rand = random.randint(1, 7)
         if rand == 1:
             return blocks.Block1()
@@ -89,9 +92,9 @@ class Game:
                 self.lineclear(y)
     def update(self, time):
         self._timeCounter += time
-        if self._timeCounter < 500:  # Only move down block every 1 second
+        if self._timeCounter < 500/self.speed:  # Only move down block every 1 second
             return
-        self._timeCounter -= 500
+        self._timeCounter -= 500/self.speed
 
         self._position[1] += 1  # Move down block
 

@@ -27,7 +27,7 @@ def main():
 
     lastTick = pygame.time.get_ticks()
     #i = 0
-    while 1:
+    while 1: ##메인 루프
         newTick = pygame.time.get_ticks()
         diff = newTick - lastTick
         lastTick = newTick
@@ -38,7 +38,7 @@ def main():
 
         drawBlock(screen, rect, tetris.getGameMap(), (0, 0))
         drawBlock(screen, rect, tetris.getBlock().getRotatedShape(),tetris.getPosition())
-
+        pygame.draw.rect(screen, (50, 50, 50), (500, 0, 50, 500))
         pygame.display.flip()
         pygame.time.wait(10)
         #i += 1
@@ -57,7 +57,12 @@ def update(time):
                 tetris.moveRight()
             elif event.key == pygame.K_UP:
                 tetris.rotate()
-    tetris.update(time)
+            elif event.key == pygame.K_DOWN:
+                tetris.speed = 3
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                tetris.speed = 1
+    tetris.update(time*(tetris.speed))
 
 
 def render():

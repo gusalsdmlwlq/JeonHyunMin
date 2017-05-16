@@ -2,23 +2,23 @@ package Queue;
 
 import javax.swing.JOptionPane;
 
-public class Queue extends LinkedList.LinkedList{
+public class Queue<E> extends LinkedList.LinkedList<E>{
 	Queue()
 	{
 		this.head.next = this.tail;
 		this.tail.next = this.head;
 	}
-	public void enqueue(Object data)
+	public void enqueue(E data)
 	{
 		addlast(data);
 	}
 	
-	public Object dequeue()
+	public E dequeue()
 	{
 		return removefirst();
 	}
 	
-	public Object first()
+	public E first()
 	{
 		return head.next.data;
 	}
@@ -36,7 +36,7 @@ public class Queue extends LinkedList.LinkedList{
 	public static void main(String args[])
 	{
 		boolean exit = true;
-		Queue queue = new Queue();
+		Queue<Object> queue = new Queue<Object>();
 		String menu;
 		System.out.println("Queue");
 		while(exit)
