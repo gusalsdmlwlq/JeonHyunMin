@@ -2,23 +2,24 @@ package Stack;
 
 import javax.swing.JOptionPane;
 
-public class Stack extends LinkedList.LinkedList{
-	Stack()
+public class Stack<E> extends LinkedList.LinkedList<E>{
+	public Stack()
 	{
 		this.head.next = this.tail;
 		this.tail.next = this.head;
 	}
-	public void push(Object data)
+
+	public void push(E data)
 	{
 		addlast(data);
 	}
 	
-	public Object pop()
+	public E pop()
 	{
 		return removelast();
 	}
 	
-	public Object top()
+	public E top()
 	{
 		return tail.next.data;
 	}
@@ -36,7 +37,7 @@ public class Stack extends LinkedList.LinkedList{
 	public static void main(String args[])
 	{
 		boolean exit = true;
-		Stack stack = new Stack();
+		Stack<Object> stack = new Stack<Object>();
 		String menu;
 		System.out.println("Stack");
 		while(exit)

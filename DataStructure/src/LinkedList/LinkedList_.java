@@ -2,19 +2,19 @@ package LinkedList;
 
 import javax.swing.JOptionPane;
 
-public class LinkedList<E> {
-	public int size;
-	public Node head = new Node();
-	public Node tail = new Node();
-	public LinkedList()
+public class LinkedList_<E> {
+	public int size=0;
+	public Node head;
+	public Node tail;
+	public LinkedList_()
 	{
-		this.head.next = this.tail;
-		this.tail.next = this.head;
+		this.head = new Node();
+		this.tail = new Node();
 	}
 	public class Node
 	{
-		public E data;
-		public Node next;
+		E data;
+		Node next;
 		Node()
 		{
 			this.data = null;
@@ -22,9 +22,10 @@ public class LinkedList<E> {
 		}
 		Node(E data)
 		{
-			this(data,null);
+			this.data = data;
+			this.next = null;
 		}
-		Node(E data, Node next)
+		Node(E data,Node next)
 		{
 			this.data = data;
 			this.next = next;
@@ -32,149 +33,111 @@ public class LinkedList<E> {
 	}
 	public void add(int index, E data)
 	{
-		Node cur = head;
+		Node curnode = head;
 		Node addnode = new Node(data);
-		if(index > this.size)
+		if(index > size)
 		{
-			for(int i=0; i<size; i++)
-				cur = cur.next;
-			addnode.next = cur.next;
-			cur.next = addnode;
+			for(int i=0; i<size-1; i++)
+				curnode = curnode.next;
+			curnode.next = addnode;
+			tail = addnode;
 		}
-		else if(index <= 0)
+		else if(index <= 1)
 		{
-			addnode.next = cur.next;
-			cur.next = addnode;
+			addnode.next = head;
+			head = addnode;
 		}
 		else
 		{
-			for(int i=0; i<index-1; i++)
-				cur = cur.next;
-			addnode.next = cur.next;
-			cur.next = addnode;
+			for(int i=0; i<index-2; i++)
+				curnode = curnode.next;
+			addnode.next = curnode.next;
+			curnode.next = addnode;
 		}
-		if(addnode.next == tail)
-			tail.next = addnode;
-		this.size++;
+		size++;
 	}
 	public void addfirst(E data)
 	{
-		Node addnode = new Node(data);
-		addnode.next = head.next;
-		head.next = addnode;
-		if(addnode.next == tail)
-			tail.next = addnode;
-		this.size++;
+		add(1,data);
 	}
 	public void addlast(E data)
 	{
-		Node addnode = new Node(data);
-		tail.next.next = addnode;
-		addnode.next = tail;
-		tail.next = addnode;
-		this.size++;
+		add(this.size+1,data);
 	}
 	public E remove(int index)
 	{
-		Node cur = head;
-		E removedata;
-		if(index <= 0 || index > size)
-		{
-			System.out.println("데이터 범위를 벗어났습니다.");
+		Node curnode = head;
+		Node removenode;
+		if(index > size || index <= 0)
 			return null;
+		else if(index == 1)
+		{
+			removenode = head;
+			head = head.next;
 		}
 		else
 		{
-			for(int i=0; i<index-1; i++)
-				cur = cur.next;
-			removedata = cur.next.data;
-			cur.next = cur.next.next;
-			this.size--;
-			return removedata;
+			for(int i=0; i<index-2; i++)
+				curnode = curnode.next;
+			removenode = curnode.next;
+			curnode.next = curnode.next.next;
+			if(index == size)
+				tail = curnode;
 		}
+		size--;
+		return removenode.data;
 	}
 	public E removefirst()
 	{
-		E removedata;
-		if(head.next == tail)
-			return null;
-		else
-		{
-			removedata = head.next.data;
-			head.next = head.next.next;
-			if(head.next == tail)
-				tail.next = head;
-			this.size--;
-			return removedata;
-		}
+		return remove(1);
 	}
 	public E removelast()
 	{
-		Node cur = head;
-		E removedata;
-		if(tail.next == head)
-			return null;
-		else
-		{
-			removedata = tail.next.data;
-			for(int i=0; i<size-1; i++)
-				cur = cur.next;
-			cur.next = tail;
-			tail.next = cur;
-			this.size--;
-			return removedata;
-		}
+		return remove(size);
 	}
 	public E get(int index)
 	{
-		Node cur = head;
-		if(index <= 0 || index > size)
-		{
-			System.out.println("데이터 범위를 벗어났습니다.");
+		Node curnode = head;
+		if(index > size || index <= 0)
 			return null;
-		}
 		else
 		{
-			for(int i=0; i<index; i++)
-				cur = cur.next;
-			return cur.data;
+			for(int i=0; i<index-1; i++)
+				curnode = curnode.next;
+			return curnode.data;
 		}
 	}
 	public E set(int index, E data)
 	{
-		Node cur = head;
-		E predata = null;
-		if(index <= 0 || index > size)
-		{
-			System.out.println("데이터 범위를 벗어났습니다.");
+		Node curnode = head;
+		E predata;
+		if(index > size || index <= 0)
 			return null;
-		}
 		else
 		{
 			for(int i=0; i<index-1; i++)
-				cur = cur.next;
-			predata = cur.next.data;
-			cur.next.data = data;
+				curnode = curnode.next;
+			predata = curnode.data;
+			curnode.data = data;
 			return predata;
 		}
 	}
 	public void print()
 	{
-		Node cur = head;
-		System.out.print("( ");
-		for(int i=0; i<this.size; i++)
+		Node curnode = head;
+		for(int i=0; i<size; i++)
 		{
-			cur = cur.next;
-			System.out.print(cur.data+" ");
+			System.out.print(curnode.data+" ");
+			curnode = curnode.next;
 		}
-		System.out.println(")");
+		System.out.println("");
 	}
 	public static void main(String[] args)
 	{
 		boolean exit = true;
-		LinkedList<Object> list = new LinkedList<Object>();
+		LinkedList_<Object> list = new LinkedList_<Object>();
 		String menu;
-		System.out.println("LinkedList");
+		System.out.println("LinkedList_");
 		while(exit)
 		{
 			menu = JOptionPane.showInputDialog("(1~6를 입력하세요.)\n1.add\n2.remove\n3.get\n4.set\n5.print\n6.exit");
