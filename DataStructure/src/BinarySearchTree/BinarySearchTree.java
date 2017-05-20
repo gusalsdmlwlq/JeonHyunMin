@@ -44,22 +44,15 @@ public class BinarySearchTree<E> {
 	}
 	Node search(Node root, int key)
 	{
-		if(root.key == key)
-			return root;
+		if(root.key == key) return root;
 		else if(root.key > key)
 		{
-			if(root.left == null)
-			{				
-				return root;
-			}
+			if(root.left == null) return root;
 			else return search(root.left,key);
 		}
 		else
 		{
-			if(root.right == null)
-			{
-				return root;
-			}
+			if(root.right == null) return root;
 			else return search(root.right,key);
 		}
 	}
@@ -73,7 +66,7 @@ public class BinarySearchTree<E> {
 		if(root.right == null) return root;
 		else return rightmost(root.right);
 	}
-	Object get(int key)
+	E get(int key)
 	{
 		Node getnode = search(this.root,key);
 		if(getnode.key == key) return getnode.value;
@@ -82,14 +75,12 @@ public class BinarySearchTree<E> {
 	void put(int key,E value)
 	{
 		Node newnode = new Node(key,value);
-		if(this.root == null) root = new Node(key,value); //처음으로 input을 받는 경우
+		if(root == null) root = new Node(key,value); //처음으로 input을 받는 경우
 		else
 		{
 			Node curnode = search(this.root,key); //key 값을 가진 노드를 찾음
 			if(curnode.key == newnode.key) //이미 key 값의 노드가 존재
-			{
-				newnode.value = value; //value를 대체
-			}
+				curnode.value = value; //value를 대체
 			else if(curnode.key > newnode.key) //key 값을 가진 노드가 없음 -> left에 새로운 노드를 만듬
 			{
 				newnode.parent = curnode;
@@ -156,16 +147,6 @@ public class BinarySearchTree<E> {
 					{
 						leftmostnode.parent.left = leftmostnode.right;
 						leftmostnode.right.parent = leftmostnode.parent;
-						/**if(leftmostnode.parent.key > leftmostnode.right.key) //leftmostnode가 leftchild인 경우
-						{
-							leftmostnode.parent.left = leftmostnode.right;
-							leftmostnode.right.parent = leftmostnode.parent;
-						}
-						else //leftmostnode가 rightchild인 경우
-						{
-							leftmostnode.parent.right = leftmostnode.right;
-							leftmostnode.right.parent = leftmostnode.parent;
-						}**/
 					}
 				}
 				else
@@ -176,16 +157,6 @@ public class BinarySearchTree<E> {
 					{
 						rightmostnode.parent.right = rightmostnode.left;
 						rightmostnode.left.parent = rightmostnode.parent;
-						/**if(rightmostnode.parent.key > rightmostnode.left.key) //rightmostnode가 leftchild인 경우
-						{
-							rightmostnode.parent.left = rightmostnode.left;
-							rightmostnode.left.parent = rightmostnode.parent;
-						}
-						else //rightmostnode가 rightchild인 경우
-						{
-							rightmostnode.parent.right = rightmostnode.left;
-							rightmostnode.left.parent = rightmostnode.parent;
-						}**/
 					}
 				}
 				return removevalue;
@@ -203,42 +174,24 @@ public class BinarySearchTree<E> {
 	}
 	Node floorentry(int key)
 	{
-		Node curnode = root;
+		Node curnode = search(root,key);
 		if(leftmost(root).key > key) return null;
+		if(curnode.key <= key) return curnode;
 		while(true)
 		{
-			if(curnode.right == null) return curnode;
-			if(curnode.key == key) return curnode;
-			else if(curnode.key > key)
-			{
-				curnode = curnode.left;
-				if(curnode.key < key) return curnode;
-			}
-			else
-			{
-				if(curnode.right.key > key) return curnode;
-				curnode = curnode.right;
-			}
+			if(curnode.key > curnode.parent.key) return curnode.parent;
+			curnode = curnode.parent;
 		}
 	}
 	Node seilingentry(int key)
 	{
-		Node curnode = root;
+		Node curnode = search(root,key);
 		if(rightmost(root).key < key) return null;
+		if(curnode.key >= key) return curnode;
 		while(true)
 		{
-			if(curnode.left == null) return curnode;
-			if(curnode.key == key) return curnode;
-			else if(curnode.key > key)
-			{
-				if(curnode.left.key < key) return curnode;
-				curnode = curnode.left;
-			}
-			else
-			{
-				curnode = curnode.right;
-				if(curnode.key > key) return curnode;
-			}
+			if(curnode.key < curnode.parent.key) return curnode.parent;
+			curnode = curnode.parent;
 		}
 	}
 	void printtree()
@@ -260,9 +213,7 @@ public class BinarySearchTree<E> {
 		Stack<Node> s = new Stack<Node>(); //노드를 저장할 스택
 		Node curnode = root;
 		if(curnode == null) //빈 트리인 경우
-		{
 			return;
-		}
 		while(!s.isEmpty() || curnode != null) //모든 노드를 한번씩 체크
 		{
 			if(curnode != null) //leftmost 노드까지 내려가면서 스택에 노드를 차례대로 저장
@@ -282,18 +233,19 @@ public class BinarySearchTree<E> {
 	{
 		BinarySearchTree<Object> tree = new BinarySearchTree<Object>();
 		tree.put(5,"five");
-		tree.put(2,"two");
 		tree.put(4,"four");
+		tree.put(2,"two");
 		tree.put(1,"one");
 		tree.put(3,"three");
 		tree.put(6,"six");
 		tree.put(7,"seven");
 		tree.put(0,"zero");
-		tree.remove(5);
+		tree.put(5,5);
 		tree.remove(0);
 		tree.printtree();
 		System.out.println();
-		tree.inordertraversal(tree.root);
-		System.out.println(tree.floorentry(5).value);
+		//tree.inordertraversal(tree.root);
+		System.out.println(tree.floorentry(9).value);
+		System.out.println(tree.get(5));
 	}
 }

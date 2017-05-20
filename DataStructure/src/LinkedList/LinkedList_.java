@@ -102,10 +102,8 @@ public class LinkedList_<E> {
 		size--;
 		if(size==0)
 		{
-			head.data = null;
-			head.next = null;
-			tail.data = null;
-			tail.next = null;
+			head = new Node();
+			tail = new Node();
 		}
 		return removenode.data;
 	}
@@ -119,10 +117,8 @@ public class LinkedList_<E> {
 		size--;
 		if(size==0)
 		{
-			head.data = null;
-			head.next = null;
-			tail.data = null;
-			tail.next = null;
+			head = new Node();
+			tail = new Node();
 		}
 		return removedata;
 	}
@@ -139,10 +135,8 @@ public class LinkedList_<E> {
 		size--;
 		if(size==0)
 		{
-			head.data = null;
-			head.next = null;
-			tail.data = null;
-			tail.next = null;
+			head = new Node();
+			tail = new Node();
 		}
 		return removedata;
 	}

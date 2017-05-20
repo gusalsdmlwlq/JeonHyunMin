@@ -2,11 +2,13 @@ package Queue;
 
 import javax.swing.JOptionPane;
 
-public class Queue<E> extends LinkedList.LinkedList<E>{
-	Queue()
+public class Queue<E> extends LinkedList.LinkedList_<E>{
+	public Queue()
 	{
-		this.head.next = this.tail;
-		this.tail.next = this.head;
+		//this.head.next = this.tail;
+		//this.tail.next = this.head;
+		this.head = new Node();
+		this.tail = new Node();
 	}
 	public void enqueue(E data)
 	{
@@ -20,7 +22,8 @@ public class Queue<E> extends LinkedList.LinkedList<E>{
 	
 	public E first()
 	{
-		return head.next.data;
+		//return head.next.data;
+		return head.data;
 	}
 	
 	public int size()
@@ -30,7 +33,7 @@ public class Queue<E> extends LinkedList.LinkedList<E>{
 	
 	public boolean isEmpty()
 	{
-		return (head.next == tail);
+		return (size == 0);
 	}
 	
 	public static void main(String args[])
