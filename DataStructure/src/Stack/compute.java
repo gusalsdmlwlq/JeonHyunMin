@@ -64,8 +64,7 @@ public class compute {
 					while(operators.top() != null)
 					{
 						temp = operands.pop();
-						operands.push(operation(operands.pop(),temp,operators.top()));
-						operators.pop();
+						operands.push(operation(operands.pop(),temp,operators.pop()));
 					}
 					operators.push(operator);
 					break;
@@ -73,8 +72,7 @@ public class compute {
 					while(operators.top() != null)
 					{
 						temp = operands.pop();
-						operands.push(operation(operands.pop(),temp,operators.top()));
-						operators.pop();
+						operands.push(operation(operands.pop(),temp,operators.pop()));
 					}
 					operators.push(operator);
 					break;
@@ -82,8 +80,7 @@ public class compute {
 					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
 						temp = operands.pop();
-						operands.push(operation(operands.pop(),temp,operators.top()));
-						operators.pop();
+						operands.push(operation(operands.pop(),temp,operators.pop()));
 					}
 					operators.push(operator);
 					break;
@@ -91,8 +88,7 @@ public class compute {
 					while(operators.top() != null && (operators.top().equals("*") || operators.top().equals("/")))
 					{
 						temp = operands.pop();
-						operands.push(operation(operands.pop(),temp,operators.top()));
-						operators.pop();
+						operands.push(operation(operands.pop(),temp,operators.pop()));
 					}
 					operators.push(operator);
 					break;
@@ -100,8 +96,7 @@ public class compute {
 					while(operators.top() != null)
 					{
 						temp = operands.pop();
-						operands.push(operation(operands.pop(),temp,operators.top()));
-						operators.pop();
+						operands.push(operation(operands.pop(),temp,operators.pop()));
 					}
 					operators.push(operator);
 					break;

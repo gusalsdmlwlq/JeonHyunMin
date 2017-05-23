@@ -95,12 +95,14 @@ public class BinarySearchTree<E> {
 	}
 	E remove(int key)
 	{
-		Node removenode = search(this.root,key);
+		Node removenode = search(root,key);
 		if(removenode.key == key) //remove하려는 key가 존재
 		{
 			if(removenode.left == null && removenode.right == null) //removenode의 child가 없는 경우
 			{
-				if(removenode.parent.key > removenode.key) //removenode가 left child인 경우
+				if(removenode == root)
+					root = null;
+				else if(removenode.parent.key > removenode.key) //removenode가 left child인 경우
 					removenode.parent.left = null;
 				else //removenode가 right child인 경우
 					removenode.parent.right = null;
@@ -108,6 +110,8 @@ public class BinarySearchTree<E> {
 			}
 			else if(removenode.left == null & removenode.right != null) //left child만 없는 경우
 			{
+				if(removenode == root)
+					root = removenode.right;
 				if(removenode.parent.key > removenode.key) //removenode가 left child인 경우
 				{
 					removenode.parent.left = removenode.right;
@@ -122,6 +126,8 @@ public class BinarySearchTree<E> {
 			}
 			else if(removenode.left != null && removenode.right == null) //right child만 없는 경우
 			{
+				if(removenode == root)
+					root = removenode.left;
 				if(removenode.parent.key > removenode.key) //removenode가 left child인 경우
 				{
 					removenode.parent.left = removenode.left;
@@ -139,15 +145,24 @@ public class BinarySearchTree<E> {
 				E removevalue = removenode.value;
 				Node leftmostnode = leftmost(removenode.right);
 				Node rightmostnode = rightmost(removenode.left);
-				if(depth(leftmostnode) >= depth(rightmostnode)) //지우려는 노드의 바로 전 노드와 바로 다음 노드중 depth가 큰 노드를 찾음
+				if(depth(leftmostnode) > depth(rightmostnode)) //지우려는 노드의 바로 전 노드와 바로 다음 노드중 depth가 큰 노드를 찾음
 				{
 					removenode.key = leftmostnode.key;
 					removenode.value = leftmostnode.value;
 					if(leftmostnode.right != null) //leftmostnode가 child를 가진 경우
 					{
-						leftmostnode.parent.left = leftmostnode.right;
-						leftmostnode.right.parent = leftmostnode.parent;
+						if(leftmostnode.key < leftmostnode.parent.key) //leftmostnode가 leftchild
+						{
+							leftmostnode.parent.left = leftmostnode.right;
+							leftmostnode.right.parent = leftmostnode.parent;
+						}
+						else //leftmostnode가 rightchild
+						{
+							leftmostnode.parent.right = leftmostnode.right;
+							leftmostnode.right.parent = leftmostnode.parent;
+						}
 					}
+					leftmostnode = null;
 				}
 				else
 				{
@@ -155,9 +170,18 @@ public class BinarySearchTree<E> {
 					removenode.value = rightmostnode.value;
 					if(rightmostnode.left != null) //rightmostnode가 child를 가진 경우
 					{
-						rightmostnode.parent.right = rightmostnode.left;
-						rightmostnode.left.parent = rightmostnode.parent;
+						if(rightmostnode.key > rightmostnode.parent.key) //rightmostnode가 rightchild
+						{
+							rightmostnode.parent.right = rightmostnode.left;
+							rightmostnode.left.parent = rightmostnode.parent;
+						}
+						else //rightmostnode가 leftchild
+						{
+							rightmostnode.parent.left = rightmostnode.left;
+							rightmostnode.left.parent = rightmostnode.parent;
+						}
 					}
+					rightmostnode = null;
 				}
 				return removevalue;
 			}
@@ -204,7 +228,7 @@ public class BinarySearchTree<E> {
 		else
 		{
 			print(root.left);
-			System.out.println(root.value);
+			System.out.println(root.value+" "+depth(root));
 			print(root.right);
 		}
 	}
@@ -240,12 +264,7 @@ public class BinarySearchTree<E> {
 		tree.put(6,"six");
 		tree.put(7,"seven");
 		tree.put(0,"zero");
-		tree.put(5,5);
-		tree.remove(0);
+		tree.remove(5);
 		tree.printtree();
-		System.out.println();
-		//tree.inordertraversal(tree.root);
-		System.out.println(tree.floorentry(9).value);
-		System.out.println(tree.get(5));
 	}
 }

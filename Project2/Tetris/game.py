@@ -8,10 +8,13 @@ class Game:
     WIDTH = 20
     HEIGHT = 20
     speed = 1
+    stage = 1
+    score = 0
     def __init__(self):
         self._gameMap = self.__initGameMap()
         self._currentBlock = self.__makeRandomBlock()
-        self._position = [9, 0]
+        self.nextblock = self.__makeRandomBlock()
+        self._position = [8, -1]
         self._timeCounter = 0
 
     def __initGameMap(self):
@@ -22,7 +25,7 @@ class Game:
                 gameMap[y].append(0)
         return gameMap
 
-    def __makeRandomBlock(self):
+    def __makeRandomBlock(self): #블럭 랜덤으로 지정
         time.sleep(0.5)
         rand = random.randint(1, 7)
         if rand == 1:
@@ -40,14 +43,11 @@ class Game:
         elif rand == 7:
             return blocks.Block7()
 
-    def __addBlockToGameMap(self):
-        """Takes the current block (which the player moves) and adds it to the
-        game map, making it a part of the "environment".
-        """
+    def __addBlockToGameMap(self): #화면에 블럭 표시
         for y in range(self._currentBlock.getHeight()):
             for x in range(self._currentBlock.getWidth()):
                 value = self._currentBlock.getRotatedShape()[y][x]
-                if value is 0:  # Avoid overwriting nonzero numbers in gameMap
+                if value is 0:
                     continue
                 y2 = self._position[1] + y
                 x2 = self._position[0] + x
@@ -75,13 +75,13 @@ class Game:
                 if shapeValue and (x2<=-1 or x2>=20 or y2>=20):
                     return True
         return False
-    def lineclear(self,line):
+    def lineclear(self,line): #꽉 찬 라인 비우기
         for x in range(0,20):
             self._gameMap[line][x] = 0
         for y in range(0,line):
             for z in range(0,20):
                 self._gameMap[line-y][z] = self._gameMap[line-y-1][z]
-    def linesclear(self):
+    def linesclear(self): #한 줄이 꽉 찼는지 체크
         for y in range(0,20):
             x = 0
             while x<20:
@@ -90,6 +90,7 @@ class Game:
                 x += 1
             if x == 20:
                 self.lineclear(y)
+                self.score += 100
     def update(self, time):
         self._timeCounter += time
         if self._timeCounter < 500/self.speed:  # Only move down block every 1 second
@@ -105,8 +106,9 @@ class Game:
                 if self._position[1] <= -1:
                     sys.exit()
             self.__addBlockToGameMap()
-            self._position = [10, 0]
-            self._currentBlock = self.__makeRandomBlock()
+            self._position = [8, -1]
+            self._currentBlock = self.nextblock
+            self.nextblock = self.__makeRandomBlock()
         self.linesclear()
 
     def rotate(self):
@@ -146,3 +148,5 @@ class Game:
 
     def getBlock(self):
         return self._currentBlock
+    def getnextBlock(self):
+        return self.nextblock

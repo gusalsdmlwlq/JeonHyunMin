@@ -40,7 +40,7 @@ public class LinkedList_<E> {
 			head = addnode;
 			tail = addnode;
 		}
-		if(index > size)
+		else if(index > size)
 		{
 			for(int i=0; i<size-1; i++)
 				curnode = curnode.next;
@@ -132,6 +132,7 @@ public class LinkedList_<E> {
 		for(int i=0; i<size-2; i++)
 			curnode = curnode.next;
 		tail = curnode;
+		tail.next = null;
 		size--;
 		if(size==0)
 		{

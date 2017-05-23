@@ -30,7 +30,8 @@ class Block:
         for n in range(int(self._angle / 90)):
             rotatedShape = list(zip(*rotatedShape))[::-1]
         return rotatedShape
-
+    def getnextblock(self):
+        return self._shape
     def getWidth(self):
         return len(self.getRotatedShape()[0])
 
