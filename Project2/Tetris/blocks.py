@@ -1,11 +1,6 @@
 class Block:
 
     def __init__(self, shape, name):
-        """Creates a Tetris block out of a 2D array made out of characters.
-
-        Args:
-            shape: A 2D array made out of text characters.
-        """
         self._shape = shape
         self._angle = 0
         self._name = name
@@ -25,7 +20,7 @@ class Block:
     def rotateCounterclockwise(self):
         self._angle = (self._angle + 90) % 360
 
-    def getRotatedShape(self):
+    def getRotatedShape(self): #회전한 블럭 모양을 return
         rotatedShape = self._shape
         for n in range(int(self._angle / 90)):
             rotatedShape = list(zip(*rotatedShape))[::-1]

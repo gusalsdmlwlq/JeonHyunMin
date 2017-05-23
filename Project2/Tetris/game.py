@@ -9,6 +9,7 @@ class Game:
     HEIGHT = 20
     speed = 1
     stage = 1
+    stages = [0,1000,2000,3000,4500,6000,8000]
     score = 0
     def __init__(self):
         self._gameMap = self.__initGameMap()
@@ -91,6 +92,10 @@ class Game:
             if x == 20:
                 self.lineclear(y)
                 self.score += 100
+        for k in range(1,7): #일정 점수를 얻으면 스테이지가 올라감
+            if(self.score >= self.stages[k] and self.stages[k] != -1):
+                self.stage = k+1
+                self.stages[k] = -1
     def update(self, time):
         self._timeCounter += time
         if self._timeCounter < 500/self.speed:  # Only move down block every 1 second

@@ -56,6 +56,7 @@ def main():
         screen.blit(text_nextblock, textrect_nextblock)
         screen.blit(text_stage,textrect_stage)
         screen.blit(text_score, textrect_score)
+        text_stage_ = font2.render(str(tetris.stage), True, (200, 0, 0))
         screen.blit(text_stage_, textrect_stage_)
         text_score_ = font2.render(str(tetris.score), True, (100, 100, 100))
         screen.blit(text_score_, textrect_score_)
