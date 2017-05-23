@@ -2,6 +2,7 @@ import random
 import blocks
 import sys
 import time
+import pygame
 
 class Game:
 
@@ -17,6 +18,7 @@ class Game:
         self.nextblock = self.__makeRandomBlock()
         self._position = [8, -1]
         self._timeCounter = 0
+        self.fire_state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
     def __initGameMap(self):
         gameMap = []
@@ -92,6 +94,7 @@ class Game:
             if x == 20:
                 self.lineclear(y)
                 self.score += 100
+                self.fire_state[y] = 1
         for k in range(1,7): #일정 점수를 얻으면 스테이지가 올라감
             if(self.score >= self.stages[k] and self.stages[k] != -1):
                 self.stage = k+1

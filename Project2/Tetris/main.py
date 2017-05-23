@@ -5,8 +5,15 @@ import pygame
 
 import blocks
 import game
+import time
 
 tetris = game.Game()
+fire_1 = pygame.image.load('fire1.png')
+fire_2 = pygame.image.load('fire2.png')
+fire_3 = pygame.image.load('fire3.png')
+fire_4 = pygame.image.load('fire4.png')
+fire_5 = pygame.image.load('fire5.png')
+fire_6 = pygame.image.load('fire6.png')
 
 # 블럭 색깔
 colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
@@ -60,6 +67,21 @@ def main():
         screen.blit(text_stage_, textrect_stage_)
         text_score_ = font2.render(str(tetris.score), True, (100, 100, 100))
         screen.blit(text_score_, textrect_score_)
+        for x in range(len(tetris.fire_state)):
+            makefire = drawfire(screen,x)
+            next(makefire)
+            if(tetris.fire_state[x]==1):
+                makefire.send(fire_1)
+            elif(tetris.fire_state[x]==2):
+                makefire.send(fire_2)
+            elif (tetris.fire_state[x] == 3):
+                makefire.send(fire_3)
+            elif (tetris.fire_state[x] == 4):
+                makefire.send(fire_4)
+            elif (tetris.fire_state[x] == 5):
+                makefire.send(fire_5)
+            elif (tetris.fire_state[x] == 6):
+                makefire.send(fire_6)
         pygame.display.flip()
         pygame.time.wait(10)
 
@@ -96,6 +118,14 @@ def drawBlock(screen, rect, shape, position): #블록 그리기
             if not shape[y][x] == 0:
                 rect.fill(colors[shape[y][x]])
                 screen.blit(rect, (25 * (x + position[0]), 25 * (y + position[1])))
+
+def drawfire(screen,line):
+    while(True):
+        state = yield
+        screen.blit(state,(0,line*25))
+        tetris.fire_state[line] += 1
+        if(tetris.fire_state[line] == 7):
+            tetris.fire_state[line] = 0
 
 if __name__ == '__main__':
     main()
