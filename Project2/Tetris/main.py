@@ -17,22 +17,30 @@ fire_4 = pygame.image.load('fire4.png')
 fire_5 = pygame.image.load('fire5.png')
 fire_6 = pygame.image.load('fire6.png')
 storm_ = pygame.image.load('storm.png')
+jigsaw = pygame.image.load('jigsaw.png')
+jigsaw_1 = pygame.image.load('jigsaw_1.png')
+jigsaw_2 = pygame.image.load('jigsaw_2.png')
+jigsaw_3 = pygame.image.load('jigsaw_3.png')
+jigsaw_4 = pygame.image.load('jigsaw_4.png')
+jigsaw_5 = pygame.image.load('jigsaw_5.png')
 
 pygame.init()
 pygame.mixer.music.load('bgm.wav')
 clearsound = pygame.mixer.Sound('clear.wav')
 pygame.mixer.music.play(-1,0.0)
 
+
 # 블럭 색깔
 colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
     5: (0, 255, 255), 6: (255, 0, 255), 7: (255,255,255)}
+screen = pygame.display.set_mode((800, 500)) #게임 창
+
 def main():
-    screen = pygame.display.set_mode((800, 500)) #게임 창
 
     pygame.display.set_caption('Tetris') #창 제목
 
-    font = pygame.font.Font(None,60) #텍스트
-    font2 = pygame.font.Font(None,40)
+    font = pygame.font.Font(None, 60)  # 텍스트
+    font2 = pygame.font.Font(None, 40)
     text_stage = font.render('Stage',True,(255,255,255))
     text_score = font.render('Score', True, (255, 255, 255))
     text_stage_ = font2.render(str(tetris.stage),True,(200,0,0))
@@ -92,16 +100,62 @@ def main():
         pygame.display.flip()
         pygame.time.wait(10)
     pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
-    for x in range(0,480):
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load('storm.mp3')
+    pygame.mixer.music.play(-1, 0.0)
+    accel = 0.01
+    for x in range(0,720):
         screen.fill((0,0,100))
-        storm = pygame.transform.rotate(storm_,x*15)
+        storm = pygame.transform.rotate(storm_,x*accel)
         screen.blit(storm,(400-storm.get_rect().width/2,250-storm.get_rect().height/2))
         pygame.display.flip()
+        accel += 0.01
     webbrowser.open(url)
 
-def update(time):
+def update(time_):
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #종료
+            pygame.mixer.music.stop()
+            screen.fill((0,0,0))
+            screen.blit(jigsaw_1,(500,400))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            screen.blit(jigsaw_2,(100,100))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            screen.blit(jigsaw_3,(400,100))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            screen.blit(jigsaw_4,(100,300))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            screen.blit(jigsaw_5,(300,200))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            screen.blit(jigsaw,(0,0))
+            pygame.display.flip()
+            time.sleep(1)
+            screen.fill((0, 0, 0))
+            pygame.display.flip()
+            time.sleep(1)
+            pygame.mixer.Sound.play(clearsound)
+            pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('storm.mp3')
+            pygame.mixer.music.play(-1, 0.0)
+            accel = 0.01
+            for x in range(0, 720):
+                screen.fill((0, 0, 100))
+                storm = pygame.transform.rotate(storm_, x * accel)
+                screen.blit(storm, (400 - storm.get_rect().width / 2, 250 - storm.get_rect().height / 2))
+                pygame.display.flip()
+                accel += 0.01
+            webbrowser.open(url)
             sys.exit()
         elif event.type == pygame.KEYDOWN: #키보드 입력 체크
             if event.key == pygame.K_LEFT:
@@ -115,7 +169,7 @@ def update(time):
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_DOWN:
                 tetris.speed = 1
-    tetris.update(time*(tetris.speed))
+    tetris.update(time_*(tetris.speed))
 
 def initGameMap():
     gameMap = []
