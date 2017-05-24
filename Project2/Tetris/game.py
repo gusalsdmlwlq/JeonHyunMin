@@ -19,7 +19,7 @@ class Game:
         self._position = [8, -1]
         self._timeCounter = 0
         self.fire_state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
+        self.game = True
     def __initGameMap(self):
         gameMap = []
         for y in range(20):
@@ -92,9 +92,9 @@ class Game:
                     break
                 x += 1
             if x == 20:
+                self.fire_state[y] = 1
                 self.lineclear(y)
                 self.score += 100
-                self.fire_state[y] = 1
         for k in range(1,7): #일정 점수를 얻으면 스테이지가 올라감
             if(self.score >= self.stages[k] and self.stages[k] != -1):
                 self.stage = k+1
@@ -112,7 +112,9 @@ class Game:
             while self.__doesBlockCollidewithwall() or self.__doesBlockCollide(): #블럭끼리 겹치면 안 겹칠 때 까지 위로 밀어냄
                 self._position[1] -= 1
                 if self._position[1] <= -1:
-                    sys.exit()
+                    self.game = False
+                    break
+                    #sys.exit()
             self.__addBlockToGameMap()
             self._position = [8, -1]
             self._currentBlock = self.nextblock

@@ -2,10 +2,12 @@
 
 import sys
 import pygame
-
 import blocks
 import game
 import time
+import math
+import webbrowser
+url = 'http://kr.battle.net/heroes/ko/'
 
 tetris = game.Game()
 fire_1 = pygame.image.load('fire1.png')
@@ -14,15 +16,20 @@ fire_3 = pygame.image.load('fire3.png')
 fire_4 = pygame.image.load('fire4.png')
 fire_5 = pygame.image.load('fire5.png')
 fire_6 = pygame.image.load('fire6.png')
+storm_ = pygame.image.load('storm.png')
+
+pygame.init()
+pygame.mixer.music.load('bgm.wav')
+clearsound = pygame.mixer.Sound('clear.wav')
+pygame.mixer.music.play(-1,0.0)
 
 # 블럭 색깔
 colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
     5: (0, 255, 255), 6: (255, 0, 255), 7: (255,255,255)}
 def main():
-    pygame.init()
     screen = pygame.display.set_mode((800, 500)) #게임 창
 
-    pygame.display.set_caption('Tetris') #메인 게임 객체
+    pygame.display.set_caption('Tetris') #창 제목
 
     font = pygame.font.Font(None,60) #텍스트
     font2 = pygame.font.Font(None,40)
@@ -48,7 +55,7 @@ def main():
 
     lastTick = pygame.time.get_ticks()
 
-    while 1: ##메인 루프 / 화면 표시
+    while tetris.game: ##메인 루프 / 화면 표시
         newTick = pygame.time.get_ticks()
         diff = newTick - lastTick
         lastTick = newTick
@@ -84,6 +91,13 @@ def main():
                 makefire.send(fire_6)
         pygame.display.flip()
         pygame.time.wait(10)
+    pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
+    for x in range(0,480):
+        screen.fill((0,0,100))
+        storm = pygame.transform.rotate(storm_,x*15)
+        screen.blit(storm,(400-storm.get_rect().width/2,250-storm.get_rect().height/2))
+        pygame.display.flip()
+    webbrowser.open(url)
 
 def update(time):
     for event in pygame.event.get():
@@ -111,7 +125,6 @@ def initGameMap():
             gameMap[y].append(0)
     return gameMap
 
-
 def drawBlock(screen, rect, shape, position): #블록 그리기
     for y in range(len(shape)):
         for x in range(len(shape[0])):
@@ -126,6 +139,8 @@ def drawfire(screen,line):
         tetris.fire_state[line] += 1
         if(tetris.fire_state[line] == 7):
             tetris.fire_state[line] = 0
+        pygame.mixer.Sound.play(clearsound)
+        time.sleep(0.02)
 
 if __name__ == '__main__':
     main()
