@@ -1,8 +1,9 @@
+import pygame
 import random
 import blocks
 import sys
 import time
-import pygame
+
 
 class Game:
 
@@ -12,6 +13,7 @@ class Game:
     stage = 1
     stages = [0,1000,2000,3000,4500,6000,8000]
     score = 0
+    stageup =False
     def __init__(self):
         self._gameMap = self.__initGameMap()
         self._currentBlock = self.__makeRandomBlock()
@@ -99,6 +101,7 @@ class Game:
             if(self.score >= self.stages[k] and self.stages[k] != -1):
                 self.stage = k+1
                 self.stages[k] = -1
+                self.stageup = True
     def update(self, time):
         self._timeCounter += time
         if self._timeCounter < 500/self.speed:  # Only move down block every 1 second

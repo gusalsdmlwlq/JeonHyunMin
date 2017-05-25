@@ -17,17 +17,20 @@ fire_4 = pygame.image.load('fire4.png')
 fire_5 = pygame.image.load('fire5.png')
 fire_6 = pygame.image.load('fire6.png')
 storm_ = pygame.image.load('storm.png')
+hots = pygame.image.load('storm_.png')
 jigsaw = pygame.image.load('jigsaw.png')
 jigsaw_1 = pygame.image.load('jigsaw_1.png')
 jigsaw_2 = pygame.image.load('jigsaw_2.png')
 jigsaw_3 = pygame.image.load('jigsaw_3.png')
 jigsaw_4 = pygame.image.load('jigsaw_4.png')
 jigsaw_5 = pygame.image.load('jigsaw_5.png')
+stageup = pygame.image.load('stageup.png')
 
 pygame.init()
 pygame.mixer.music.load('bgm.wav')
 clearsound = pygame.mixer.Sound('clear.wav')
 pygame.mixer.music.play(-1,0.0)
+stageup_ = pygame.mixer.Sound('stageup.wav')
 
 
 # 블럭 색깔
@@ -98,11 +101,20 @@ def main():
             elif (tetris.fire_state[x] == 6):
                 makefire.send(fire_6)
         pygame.display.flip()
+        if(tetris.stageup):
+            pygame.mixer.music.stop()
+            pygame.mixer.Sound.play(stageup_)
+            tetris.stageup = False
+            screen.fill((0, 0, 0))
+            screen.blit(stageup,(0,0))
+            pygame.display.flip()
+            time.sleep(2)
+            pygame.mixer.music.play(-1,0.0)
         pygame.time.wait(10)
     pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
     pygame.mixer.music.stop()
     pygame.mixer.music.load('storm.mp3')
-    pygame.mixer.music.play(-1, 0.0)
+    pygame.mixer.music.play(1, 0.0)
     accel = 0.01
     for x in range(0,720):
         screen.fill((0,0,100))
@@ -110,6 +122,10 @@ def main():
         screen.blit(storm,(400-storm.get_rect().width/2,250-storm.get_rect().height/2))
         pygame.display.flip()
         accel += 0.01
+    screen.fill((0, 0, 100))
+    screen.blit(hots, (0, 0))
+    pygame.display.flip()
+    time.sleep(1)
     webbrowser.open(url)
 
 def update(time_):
@@ -149,7 +165,7 @@ def update(time_):
             pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
             pygame.mixer.music.stop()
             pygame.mixer.music.load('storm.mp3')
-            pygame.mixer.music.play(-1, 0.0)
+            pygame.mixer.music.play(1, 0.0)
             accel = 0.01
             for x in range(0, 720):
                 screen.fill((0, 0, 100))
@@ -157,6 +173,10 @@ def update(time_):
                 screen.blit(storm, (400 - storm.get_rect().width / 2, 250 - storm.get_rect().height / 2))
                 pygame.display.flip()
                 accel += 0.01
+            screen.fill((0, 0, 100))
+            screen.blit(hots,(0,0))
+            pygame.display.flip()
+            time.sleep(1)
             webbrowser.open(url)
             sys.exit()
         elif event.type == pygame.KEYDOWN: #키보드 입력 체크
