@@ -116,6 +116,8 @@ def update(time_):
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #종료
             pygame.mixer.music.stop()
+            pygame.mixer.music.load('bgm2.mp3')
+            pygame.mixer.music.play()
             screen.fill((0,0,0))
             screen.blit(jigsaw_1,(500,400))
             pygame.display.flip()
