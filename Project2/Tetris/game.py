@@ -10,10 +10,12 @@ class Game:
     WIDTH = 20
     HEIGHT = 20
     speed = 1
+    stagespeed = 1
     stage = 1
-    stages = [0,1000,2000,3000,4500,6000,8000]
+    stages = [0,100,200,300,4500,6000,8000]
     score = 0
     stageup =False
+    issapce = False
     def __init__(self):
         self._gameMap = self.__initGameMap()
         self._currentBlock = self.__makeRandomBlock()
@@ -102,11 +104,14 @@ class Game:
                 self.stage = k+1
                 self.stages[k] = -1
                 self.stageup = True
+                if(k == 2):
+                    self.stagespeed += 1
     def update(self, time):
         self._timeCounter += time
-        if self._timeCounter < 500/self.speed:  # Only move down block every 1 second
+        if self.issapce == False and self._timeCounter < 500/self.speed:  # Only move down block every 1 second
             return
-        self._timeCounter -= 500/self.speed
+        self._timeCounter = 0
+        print(self.speed)
 
         self._position[1] += 1  # Move down block
 

@@ -25,13 +25,15 @@ jigsaw_3 = pygame.image.load('jigsaw_3.png')
 jigsaw_4 = pygame.image.load('jigsaw_4.png')
 jigsaw_5 = pygame.image.load('jigsaw_5.png')
 stageup = pygame.image.load('stageup.png')
+speedup = pygame.image.load('speedup.png')
 
 pygame.init()
 pygame.mixer.music.load('bgm.wav')
 clearsound = pygame.mixer.Sound('clear.wav')
 pygame.mixer.music.play(-1,0.0)
 stageup_ = pygame.mixer.Sound('stageup.wav')
-
+stagespeed = 1
+speedup_ = pygame.mixer.Sound('speedup.wav')
 
 # 블럭 색깔
 colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
@@ -59,6 +61,7 @@ def main():
     textrect_score_.center = (670, 430)
     textrect_nextblock = text_nextblock.get_rect()
     textrect_nextblock.center = (670, 160)
+
 
     rect = pygame.Surface((25, 25)).convert() #네모 한 칸
 
@@ -103,11 +106,17 @@ def main():
         pygame.display.flip()
         if(tetris.stageup):
             pygame.mixer.music.stop()
-            pygame.mixer.Sound.play(stageup_)
             tetris.stageup = False
-            screen.fill((0, 0, 0))
-            screen.blit(stageup,(0,0))
-            pygame.display.flip()
+            if(tetris.stage == 3):
+                pygame.mixer.Sound.play(speedup_)
+                screen.fill((0, 0, 0))
+                screen.blit(speedup, (0, 0))
+                pygame.display.flip()
+            else:
+                pygame.mixer.Sound.play(stageup_)
+                screen.fill((0, 0, 0))
+                screen.blit(stageup,(0,0))
+                pygame.display.flip()
             time.sleep(2)
             pygame.mixer.music.play(-1,0.0)
         pygame.time.wait(10)
@@ -187,10 +196,16 @@ def update(time_):
             elif event.key == pygame.K_UP:
                 tetris.rotate()
             elif event.key == pygame.K_DOWN:
-                tetris.speed = 3
+                tetris.speed = tetris.stagespeed*3
+            elif event.key == pygame.K_SPACE:
+                tetris.speed = 500
+                tetris.issapce = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_DOWN:
-                tetris.speed = 1
+                tetris.speed = tetris.stagespeed
+            elif event.key == pygame.K_SPACE:
+                tetris.speed = tetris.stagespeed
+                tetris.issapce = False
     tetris.update(time_*(tetris.speed))
 
 def initGameMap():
