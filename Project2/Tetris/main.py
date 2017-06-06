@@ -7,7 +7,9 @@ import game
 import time
 import math
 import webbrowser
+
 url = 'http://kr.battle.net/heroes/ko/'
+hotsfile = 'C:\Program Files\Adobe\Adobe Photoshop CS6 (64 Bit)'
 
 tetris = game.Game()
 fire_1 = pygame.image.load('fire1.png')
@@ -25,6 +27,8 @@ jigsaw_3 = pygame.image.load('jigsaw_3.png')
 jigsaw_4 = pygame.image.load('jigsaw_4.png')
 jigsaw_5 = pygame.image.load('jigsaw_5.png')
 stageup = pygame.image.load('stageup.png')
+stageup2 = pygame.image.load('stageup2.png')
+stageup3 = pygame.image.load('stageup3.png')
 speedup = pygame.image.load('speedup.png')
 
 pygame.init()
@@ -112,10 +116,20 @@ def main():
                 screen.fill((0, 0, 0))
                 screen.blit(speedup, (0, 0))
                 pygame.display.flip()
+            elif(tetris.stage == 2):
+                pygame.mixer.Sound.play(stageup_)
+                screen.fill((0, 0, 0))
+                screen.blit(stageup2,(0,0))
+                pygame.display.flip()
+            elif (tetris.stage == 4):
+                pygame.mixer.Sound.play(stageup_)
+                screen.fill((0, 0, 0))
+                screen.blit(stageup3, (0, 0))
+                pygame.display.flip()
             else:
                 pygame.mixer.Sound.play(stageup_)
                 screen.fill((0, 0, 0))
-                screen.blit(stageup,(0,0))
+                screen.blit(stageup, (0, 0))
                 pygame.display.flip()
             time.sleep(2)
             pygame.mixer.music.play(-1,0.0)
@@ -182,6 +196,7 @@ def update(time_):
                 screen.blit(storm, (400 - storm.get_rect().width / 2, 250 - storm.get_rect().height / 2))
                 pygame.display.flip()
                 accel += 0.01
+            OS.startfile(hotsfile)
             screen.fill((0, 0, 100))
             screen.blit(hots,(0,0))
             pygame.display.flip()

@@ -12,7 +12,7 @@ class Game:
     speed = 1
     stagespeed = 1
     stage = 1
-    stages = [0,100,200,300,4500,6000,8000]
+    stages = [0,1000,2000,3000,4500,6000,8000]
     score = 0
     stageup =False
     issapce = False
