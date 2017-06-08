@@ -4,7 +4,6 @@ import blocks
 import sys
 import time
 
-
 class Game:
 
     WIDTH = 20
@@ -12,7 +11,7 @@ class Game:
     speed = 1
     stagespeed = 1
     stage = 1
-    stages = [0,1000,2000,3000,4500,6000,8000]
+    stages = [0,100,200,300,400,6000,8000]
     score = 0
     stageup =False
     issapce = False
@@ -111,7 +110,6 @@ class Game:
         if self.issapce == False and self._timeCounter < 500/self.speed:  # Only move down block every 1 second
             return
         self._timeCounter = 0
-        print(self.speed)
 
         self._position[1] += 1  # Move down block
 

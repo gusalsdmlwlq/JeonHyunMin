@@ -7,9 +7,9 @@ import game
 import time
 import math
 import webbrowser
+import os
 
 url = 'http://kr.battle.net/heroes/ko/'
-hotsfile = 'C:\Program Files\Adobe\Adobe Photoshop CS6 (64 Bit)'
 
 tetris = game.Game()
 fire_1 = pygame.image.load('fire1.png')
@@ -150,6 +150,8 @@ def main():
     pygame.display.flip()
     time.sleep(1)
     webbrowser.open(url)
+    if (os.path.exists('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')):
+        os.startfile('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')
 
 def update(time_):
     for event in pygame.event.get():
@@ -196,12 +198,13 @@ def update(time_):
                 screen.blit(storm, (400 - storm.get_rect().width / 2, 250 - storm.get_rect().height / 2))
                 pygame.display.flip()
                 accel += 0.01
-            OS.startfile(hotsfile)
             screen.fill((0, 0, 100))
             screen.blit(hots,(0,0))
             pygame.display.flip()
             time.sleep(1)
             webbrowser.open(url)
+            if(os.path.exists('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')):
+                os.startfile('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')
             sys.exit()
         elif event.type == pygame.KEYDOWN: #키보드 입력 체크
             if event.key == pygame.K_LEFT:
