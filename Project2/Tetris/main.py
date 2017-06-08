@@ -134,24 +134,8 @@ def main():
             time.sleep(2)
             pygame.mixer.music.play(-1,0.0)
         pygame.time.wait(10)
-    pygame.display.set_caption('★☆★☆★☆☞히어로즈 오브 더 스톰☜☆★☆★☆★ 무료가입 ☞☞http://kr.battle.net/heroes/ko/☜☜')
-    pygame.mixer.music.stop()
-    pygame.mixer.music.load('storm.mp3')
-    pygame.mixer.music.play(1, 0.0)
-    accel = 0.01
-    for x in range(0,720):
-        screen.fill((0,0,100))
-        storm = pygame.transform.rotate(storm_,x*accel)
-        screen.blit(storm,(400-storm.get_rect().width/2,250-storm.get_rect().height/2))
-        pygame.display.flip()
-        accel += 0.01
-    screen.fill((0, 0, 100))
-    screen.blit(hots, (0, 0))
-    pygame.display.flip()
-    time.sleep(1)
-    webbrowser.open(url)
-    if (os.path.exists('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')):
-        os.startfile('C:\Program Files (x86)\Blizzard App\Battle.net Launcher.exe')
+    if(tetris.score < 1000):
+        os.startfile('main.py')
 
 def update(time_):
     for event in pygame.event.get():
