@@ -13,6 +13,7 @@ import random
 url = 'http://kr.battle.net/heroes/ko/'
 
 tetris = game.Game()
+menual = pygame.image.load('menual.png')
 fire_1 = pygame.image.load('fire1.png')
 fire_2 = pygame.image.load('fire2.png')
 fire_3 = pygame.image.load('fire3.png')
@@ -50,7 +51,9 @@ screen = pygame.display.set_mode((800, 500)) #게임 창
 def main():
 
     pygame.display.set_caption('Tetris') #창 제목
-
+    screen.blit(menual, (0,0))
+    pygame.display.flip()
+    time.sleep(5)
     font = pygame.font.Font(None, 60)  # 텍스트
     font2 = pygame.font.Font(None, 40)
     text_stage = font.render('Stage',True,(255,255,255))
@@ -59,15 +62,15 @@ def main():
     text_score_ = font2.render(str(tetris.score),True,(100,100,100))
     text_nextblock = font2.render('Next Block',True,(0,150,0))
     textrect_stage = text_stage.get_rect()
-    textrect_stage.center = (670,280)
+    textrect_stage.center = (670,230)
     textrect_score = text_score.get_rect()
-    textrect_score.center = (670, 380)
+    textrect_score.center = (670, 330)
     textrect_stage_ = text_stage_.get_rect()
-    textrect_stage_.center = (670, 330)
+    textrect_stage_.center = (670, 280)
     textrect_score_ = text_score_.get_rect()
-    textrect_score_.center = (670, 430)
+    textrect_score_.center = (670, 380)
     textrect_nextblock = text_nextblock.get_rect()
-    textrect_nextblock.center = (670, 160)
+    textrect_nextblock.center = (670, 50)
 
 
     rect = pygame.Surface((25, 25)).convert() #네모 한 칸
@@ -87,8 +90,8 @@ def main():
 
         drawBlock(screen, rect, tetris.getGameMap(), (0, 0))
         drawBlock(screen, rect, tetris.getBlock().getRotatedShape(),tetris.getPosition())
-        drawBlock(screen, rect, tetris.getnextBlock().getnextblock(), (25,1))
-        pygame.draw.rect(screen, (50, 50, 50), (500, 0, 50, 500))
+        drawBlock(screen, rect, tetris.getnextBlock().getnextblock(), (25,3))
+        pygame.draw.rect(screen, (50, 50, 50), (375, 0, 150, 500))
         screen.blit(text_nextblock, textrect_nextblock)
         screen.blit(text_stage,textrect_stage)
         screen.blit(text_score, textrect_score)
@@ -98,9 +101,9 @@ def main():
         screen.blit(text_score_, textrect_score_)
         if (justice != 0):
             x = random.randint(16, 19)
-            y = random.randint(0, 19)
-            if(tetris._gameMap[x][y] == 0):
-                tetris._gameMap[x][y] = random.randint(1,7)
+            y = random.randint(0, 14)
+            if(tetris._gameMap[x][y] != 0):
+                tetris._gameMap[x][y] = 0##random.randint(1,7)
             justice -= 1
         for x in range(len(tetris.fire_state)):
             makefire = drawfire(screen,x)
@@ -147,8 +150,8 @@ def main():
                 screen.fill((0, 0, 0))
                 screen.blit(stageup, (0, 0))
                 pygame.display.flip()
-            pygame.mixer.music.play(-1,0.0)
             time.sleep(2)
+            pygame.mixer.music.play(-1, 0.0)
         pygame.time.wait(10)
     if(tetris.score < 1000):
         os.startfile('main.py')
@@ -230,7 +233,7 @@ def initGameMap():
     gameMap = []
     for y in range(20):
         gameMap.append([])
-        for x in range(20):
+        for x in range(15):
             gameMap[y].append(0)
     return gameMap
 

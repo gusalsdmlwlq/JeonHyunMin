@@ -6,12 +6,12 @@ import time
 
 class Game:
 
-    WIDTH = 20
+    WIDTH = 15
     HEIGHT = 20
     speed = 1
     stagespeed = 1
     stage = 1
-    stages = [0,100,200,300,400,500,600]
+    stages = [0,100,200,300,400,600,800]
     score = 0
     stageup =False
     issapce = False
@@ -19,7 +19,7 @@ class Game:
         self._gameMap = self.__initGameMap()
         self._currentBlock = self.__makeRandomBlock()
         self.nextblock = self.__makeRandomBlock()
-        self._position = [8, -1]
+        self._position = [6, -1]
         self._timeCounter = 0
         self.fire_state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.game = True
@@ -27,7 +27,7 @@ class Game:
         gameMap = []
         for y in range(20):
             gameMap.append([])
-            for x in range(20):
+            for x in range(15):
                 gameMap[y].append(0)
         return gameMap
 
@@ -65,7 +65,7 @@ class Game:
                 shapeValue = self._currentBlock.getRotatedShape()[y][x]
                 y2 = self._position[1] + y
                 x2 = self._position[0] + x
-                if(x2<=-1 or x2>=20 or y2>=20):
+                if(x2<=-1 or x2>=15 or y2>=20):
                     mapValue = 0
                 else :
                     mapValue = self._gameMap[y2][x2]
@@ -78,23 +78,23 @@ class Game:
                 shapeValue = self._currentBlock.getRotatedShape()[y][x]
                 y2 = self._position[1] + y
                 x2 = self._position[0] + x
-                if shapeValue and (x2<=-1 or x2>=20 or y2>=20):
+                if shapeValue and (x2<=-1 or x2>=15 or y2>=20):
                     return True
         return False
     def lineclear(self,line): #꽉 찬 라인 비우기
-        for x in range(0,20):
+        for x in range(0,15):
             self._gameMap[line][x] = 0
         for y in range(0,line):
-            for z in range(0,20):
+            for z in range(0,15):
                 self._gameMap[line-y][z] = self._gameMap[line-y-1][z]
     def linesclear(self): #한 줄이 꽉 찼는지 체크
         for y in range(0,20):
             x = 0
-            while x<20:
+            while x<15:
                 if self._gameMap[y][x] == 0:
                     break
                 x += 1
-            if x == 20:
+            if x == 15:
                 self.fire_state[y] = 1
                 self.lineclear(y)
                 self.score += 100
@@ -122,7 +122,7 @@ class Game:
                     break
                     #sys.exit()
             self.__addBlockToGameMap()
-            self._position = [8, -1]
+            self._position = [6, -1]
             self._currentBlock = self.nextblock
             self.nextblock = self.__makeRandomBlock()
         self.linesclear()
@@ -138,7 +138,7 @@ class Game:
                 x2 = self._position[0] + x
                 if shapeValue and x2<=-1:
                     xmove += 1
-                if shapeValue and x2>=20:
+                if shapeValue and x2>=15:
                     xmove -= 1
                 if shapeValue and y2>=20:
                     ymove -= 1
