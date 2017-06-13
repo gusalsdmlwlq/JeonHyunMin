@@ -8,6 +8,7 @@ import time
 import math
 import webbrowser
 import os
+import random
 
 url = 'http://kr.battle.net/heroes/ko/'
 
@@ -30,6 +31,7 @@ stageup = pygame.image.load('stageup.png')
 stageup2 = pygame.image.load('stageup2.png')
 stageup3 = pygame.image.load('stageup3.png')
 speedup = pygame.image.load('speedup.png')
+stageup4_ = pygame.image.load('stageup4.png')
 
 pygame.init()
 pygame.mixer.music.load('bgm.wav')
@@ -38,6 +40,7 @@ pygame.mixer.music.play(-1,0.0)
 stageup_ = pygame.mixer.Sound('stageup.wav')
 stagespeed = 1
 speedup_ = pygame.mixer.Sound('speedup.wav')
+stageup4 = pygame.mixer.Sound('stageup4.wav')
 
 # 블럭 색깔
 colors = {1: (255, 0, 0), 2: (0, 255, 0), 3: (0, 0, 255), 4: (255, 255, 0),
@@ -72,6 +75,7 @@ def main():
     gameMap = initGameMap()
 
     lastTick = pygame.time.get_ticks()
+    justice = 0
 
     while tetris.game: ##메인 루프 / 화면 표시
         newTick = pygame.time.get_ticks()
@@ -92,6 +96,12 @@ def main():
         screen.blit(text_stage_, textrect_stage_)
         text_score_ = font2.render(str(tetris.score), True, (100, 100, 100))
         screen.blit(text_score_, textrect_score_)
+        if (justice != 0):
+            x = random.randint(16, 19)
+            y = random.randint(0, 19)
+            if(tetris._gameMap[x][y] == 0):
+                tetris._gameMap[x][y] = random.randint(1,7)
+            justice -= 1
         for x in range(len(tetris.fire_state)):
             makefire = drawfire(screen,x)
             next(makefire)
@@ -121,6 +131,12 @@ def main():
                 screen.fill((0, 0, 0))
                 screen.blit(stageup2,(0,0))
                 pygame.display.flip()
+            elif (tetris.stage == 5):
+                pygame.mixer.Sound.play(stageup4)
+                screen.fill((0, 0, 0))
+                screen.blit(stageup4_, (0, 0))
+                pygame.display.flip()
+                justice = 50
             elif (tetris.stage == 4):
                 pygame.mixer.Sound.play(stageup_)
                 screen.fill((0, 0, 0))
@@ -131,8 +147,8 @@ def main():
                 screen.fill((0, 0, 0))
                 screen.blit(stageup, (0, 0))
                 pygame.display.flip()
-            time.sleep(2)
             pygame.mixer.music.play(-1,0.0)
+            time.sleep(2)
         pygame.time.wait(10)
     if(tetris.score < 1000):
         os.startfile('main.py')
@@ -234,6 +250,7 @@ def drawfire(screen,line):
             tetris.fire_state[line] = 0
         pygame.mixer.Sound.play(clearsound)
         time.sleep(0.02)
+
 
 if __name__ == '__main__':
     main()
