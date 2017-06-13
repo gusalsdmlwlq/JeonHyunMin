@@ -1,3 +1,13 @@
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s1.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s2.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s3.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s4.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s5.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s6.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s7.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s8.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s9.png)
+![](https://github.com/gusalsdmlwlq/SE-2017/blob/master/Project2/s10.png)
 # 게임 설명
 * 기본적인 테트리스
 * 7종류의 블럭
@@ -12,6 +22,9 @@
 * 테트리스의 기본 기능 수행
 * 아래 방향키, 스페이스로 블럭을 가속시킬 수 있음
 * 15*20 배열로 테트리스의 맵을 만듬
+* 각 블럭은 4*4 배열로 만듬
+* 블럭은 7 종류이며 각각 다른 색깔을 가짐
+* 블럭이 다른 블럭이나 벽에 닿으면 밀려나는 방식을 사용
 * 텍스트로 score와 stage를 표시
 * 일정 score마다 stage가 올라감
 * 다음 블럭 표시
