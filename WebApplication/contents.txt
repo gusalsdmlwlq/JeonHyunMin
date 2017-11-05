@@ -1,4 +1,0 @@
-<img src="1.png">
-<img src="2.png">
-<img src="9.jpg">
-<img src="10.jpg">

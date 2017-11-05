@@ -1,3 +1,0 @@
-<img src="11.png">
-<img src="12.jpg">
-<img src="13.jpg">
