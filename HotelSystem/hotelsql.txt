@@ -1,0 +1,53 @@
+insert into reserve values('배주현','아이린','101','2017/10/15',3);
+
+
+고객 최대 객실전담직원
+select employee_name,count(employee_name) from reserve 
+where customer_name='길' group by (employee_name) having count(employee_name) in 
+(select max(count(employee_name)) from reserve 
+where customer_name='길' group by (employee_name));
+
+최근투속일
+select max(checkin) from hotel_customer h,reserve r 
+where name=customer_name and name='길';
+
+총 투숙기간
+select sum(days) from hotel_customer,reserve where name=customer_name and 
+name='';
+
+나머지
+select name,sex,address,tel from hotel_customer 
+where name='';
+
+객실조회
+select roomnumber,capacity,type from hotel_room where roomnumber='101';
+
+객실상태
+select count(*) from reserved where room_number='101' and year=2017 and month=11 and day=25;
+
+객실 최대 투숙 고객
+select customer_name,count(customer_name) from reserve 
+where room_number='101' group by(customer_name) having count(customer_name) in
+(select max(count(customer_name)) from reserve where room_number='101' group by(customer_name));
+
+객실전담직원
+select employee_name,count(employee_name) from reserve 
+where room_number='101' group by (employee_name) having count(employee_name) in 
+(select max(count(employee_name)) from reserve 
+where room_number='101' group by (employee_name));
+
+직원
+select name,sex,address,tel from hotel_employee 
+where name='슬기';
+
+최대 접대 고객
+select customer_name,count(customer_name) from reserve 
+where employee_name='슬기' group by (customer_name) having count(customer_name) in 
+(select max(count(customer_name)) from reserve 
+where employee_name='슬기' group by (customer_name));
+
+최대 관리 객실
+select room_number,count(room_number) from reserve 
+where employee_name='슬기' group by (room_number) having count(room_number) in 
+(select max(count(room_number)) from reserve 
+where employee_name='슬기' group by (room_number));

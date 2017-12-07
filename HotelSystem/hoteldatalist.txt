@@ -1,0 +1,33 @@
+5
+배주현	여	대구	13513
+강슬기	여	안산	23756
+손승완	여	서울	45932
+박수영	여	제주	55734
+김예림	여	서울	32345
+5
+아이린	여	대구	33942
+슬기	여	안산	12214
+웬디	여	서울	11342
+조이	여	제주	63853
+예리	여	서울	12345
+20
+101	2	standard
+102	2	standard
+103	4	deluxe
+104	4	deluxe
+105	4	deluxe
+106	6	superior
+107	6	superior
+108	6	superior
+109	8	suite
+110	8	suite
+201	2	standard
+202	2	standard
+203	4	deluxe
+204	4	deluxe
+205	4	deluxe
+206	6	superior
+207	6	superior
+208	6	superior
+209	8	suite
+210	8	suite

@@ -1,0 +1,18 @@
+drop table reserve;
+create table reserve
+(
+customer_name varchar(10) not null,
+employee_name varchar(10) not null,
+room_number varchar(3) not null,
+checkin date not null,
+days number(3) not null,
+primary key(customer_name,employee_name,room_number,checkin)
+);
+drop table reserved;
+create table reserved
+(
+room_number varchar(3) not null,
+year number(4) not null,
+month number(2) not null,
+day number(2) not null
+);
