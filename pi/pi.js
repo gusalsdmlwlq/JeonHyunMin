@@ -1,3 +1,4 @@
+var id;
 window.onload = function() {
 	if($("signin")!=null){
 		$("signin").observe("click",signin);
@@ -7,12 +8,15 @@ window.onload = function() {
 		$("signout").observe("click",signout);
 	}
 	$("menu").observe("click",menu);
+	if($("hello")!=null){
+		id=$("hello").firstChild.nodeValue.split("(")[0].substring(7);
+	}
 };
 function signin(){
 	var form = document.createElement("form");
     form.setAttribute("charset", "UTF-8");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "signin.html");
+    form.setAttribute("action", "sign/signin.html");
     document.body.appendChild(form);
     form.submit();
 }
@@ -20,7 +24,7 @@ function signup(){
 	var form = document.createElement("form");
     form.setAttribute("charset", "UTF-8");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "signup.html");
+    form.setAttribute("action", "sign/signup.html");
     document.body.appendChild(form);
     form.submit();
 }

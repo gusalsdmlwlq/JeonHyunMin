@@ -1,14 +1,13 @@
 window.onload = function() {
-	$("signin").observe("click",signin);
-    body.style.zoom = 1.5;
-    body.style.webkitTransform = 'scale(1.5)';
+	$("signup").observe("click",signup);
 };
-function signin(){
+function signup(){
 	var id = document.getElementById("id").value;
 	var pw = document.getElementById("pw").value;
-	new Ajax.Request("signin.php", {
+	var name = document.getElementById("name").value;
+	new Ajax.Request("signup.php", {
 		method: "get",
-		parameters: {"id":id,"pw":pw},
+		parameters: {"id":id,"pw":pw,"name":name},
 		onSuccess: success,
 		onFailure: fail,
 		onException: fail
@@ -23,7 +22,7 @@ function success(ajax){
 	var form = document.createElement("form");
     form.setAttribute("charset", "UTF-8");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "index.php");
+    form.setAttribute("action", "../index.php");
     var input = document.createElement("input");
     input.setAttribute("type","hidden");
     input.setAttribute("name","id");
@@ -48,5 +47,5 @@ function success(ajax){
     form.submit();
 }
 function fail(ajax, exception){
-	alert("잘못된 아이디 또는 비밀번호입니다.");
+	alert("이미 가입된 아이디입니다.");
 }

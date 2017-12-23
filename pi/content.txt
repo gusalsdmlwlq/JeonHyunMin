@@ -1,0 +1,7 @@
+create table content(
+title varchar(50),
+name varchar(15),
+day date,
+view int(10),
+recommend int(10),
+comment int(10));
