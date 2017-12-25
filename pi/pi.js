@@ -16,13 +16,16 @@ window.onload = function() {
 			showlist();
 		}
 		else if(document.getElementById("state").firstChild.nodeValue=="read"){
-			read(document.getElementById("content_id").firstChild.nodeValue);
+			read();
 		}
 		else if(document.getElementById("state").firstChild.nodeValue=="write"){
 			showwrite();
 		}
 		else if(document.getElementById("state").firstChild.nodeValue=="modify"){
 			showmodify(document.getElementById("content_id").firstChild.nodeValue);
+		}
+		else if(document.getElementById("state").firstChild.nodeValue=="search"){
+			searchkey(document.getElementById("search_keyword").firstChild.nodeValue);
 		}
 	}
 };

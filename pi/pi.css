@@ -95,6 +95,7 @@ nav div.open{
 section{
 	margin: 0;
 	padding: 0;
+	width: 1050px;
 	padding-top: 100px;
 	padding-left: 100px;
 }
@@ -162,7 +163,7 @@ section{
 }
 
 #text{
-	width: 1080px;
+	width: 1050px;
 	margin-left: 10px;
 	margin-top: 30px;
 }
@@ -198,11 +199,28 @@ section{
 	padding: 10px;
 	vertical-align: top;
 }
-#text tr:nth-child(1),tr:nth-child(2),#text tr:nth-child(4),#text tr:nth-child(5){
+#text tr:nth-child(1),tr:nth-child(2),#text tr:nth-child(4),#text tr:nth-child(5),#text tr:nth-child(n+5){
 	height: 30px;
 }
+#text tr:nth-child(3){
+	height: 500px;
+}
+#text tr:nth-child(n+5) td{
+	background-color: rgba(150,150,150,0.2);
+}
+#text tr:nth-child(n+5) td:nth-child(1){
+	width: 200px;
+	text-align: left;
+	padding-left: 10px;
+}
+#text tr:nth-child(n+5) td:nth-child(2){
+}
+#text tr:nth-child(4) td:nth-child(1),#text tr:nth-child(4) td:nth-child(3),#text tr:nth-child(n+5) td:nth-child(3){
+	width: 200px;
+	text-align: left;
+}
 
-#btn_delete,#btn_modify,#btn_write,#btn_write_ok,#btn_modify_ok{
+#btn_delete,#btn_modify,#btn_write,#btn_write_ok,#btn_modify_ok,#btn_delete_comment,#btn_recommend{
 	float: right;
 }
 #comment{
@@ -215,13 +233,16 @@ section{
 	height: 56px;
 	width: 80px;
 }
+#btn_delete_comment{
+	border: 1px solid black;
+}
 #text tr:nth-child(3) *{
 	width: 350px;
 	border-top: 1px solid black;
 }
 
 #write_text{
-	width: 1080px;
+	width: 1050px;
 	margin-left: 10px;
 	margin-top: 30px;
 }

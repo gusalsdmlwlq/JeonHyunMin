@@ -1,11 +1,22 @@
 create table content(
 id int(20) auto_increment primary key,
 title varchar(50),
-name varchar(15),
+name varchar(32),
 day date,
 today time,
 view int(20),
 recommend int(20),
 comment int(20),
 text varchar(10000));
+
 insert into content(title,name,day,today,view,recommend,comment,text) values('테스트','test(전현민)',now(),now(),10,10,10,'테스트');
+
+create table comment(
+id int(20),
+commentid int(20) auto_increment primary key,
+name varchar(30),
+day date,
+today time,
+text varchar(2000));
+
+insert into comment(id,name,day,today,text) values(1,'test(전현민)',now(),now(),'asdsadfas');

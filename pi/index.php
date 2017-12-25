@@ -30,5 +30,6 @@
 	</section>
 	<div id="state"><?= $_GET["state"]; ?></div>
 	<div id="content_id"><?= $_GET["content_id"]; ?></div>
+	<div id="search_keyword"><?= $_GET["keyword"]; ?></div>
 </body>
 </html>
