@@ -21,7 +21,7 @@ function success(ajax){
 	var form = document.createElement("form");
     form.setAttribute("charset", "UTF-8");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "../index.php");
+    form.setAttribute("action", "session.php");
     var input = document.createElement("input");
     input.setAttribute("type","hidden");
     input.setAttribute("name","id");
@@ -41,6 +41,11 @@ function success(ajax){
     input.setAttribute("type","hidden");
     input.setAttribute("name","sign");
     input.setAttribute("value","yes");
+    form.appendChild(input);
+    var input = document.createElement("input");
+    input.setAttribute("type","hidden");
+    input.setAttribute("name","state");
+    input.setAttribute("value","sign");
     form.appendChild(input);
     document.body.appendChild(form);
     form.submit();

@@ -1,7 +1,11 @@
 create table content(
+id int(20) auto_increment primary key,
 title varchar(50),
 name varchar(15),
 day date,
-view int(10),
-recommend int(10),
-comment int(10));
+today time,
+view int(20),
+recommend int(20),
+comment int(20),
+text varchar(10000));
+insert into content(title,name,day,today,view,recommend,comment,text) values('테스트','test(전현민)',now(),now(),10,10,10,'테스트');

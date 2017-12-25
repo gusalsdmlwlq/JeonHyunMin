@@ -11,6 +11,20 @@ window.onload = function() {
 	if($("hello")!=null){
 		id=$("hello").firstChild.nodeValue.split("(")[0].substring(7);
 	}
+	if(document.getElementById("state").firstChild!=null){
+		if(document.getElementById("state").firstChild.nodeValue=="list"){
+			showlist();
+		}
+		else if(document.getElementById("state").firstChild.nodeValue=="read"){
+			read(document.getElementById("content_id").firstChild.nodeValue);
+		}
+		else if(document.getElementById("state").firstChild.nodeValue=="write"){
+			showwrite();
+		}
+		else if(document.getElementById("state").firstChild.nodeValue=="modify"){
+			showmodify(document.getElementById("content_id").firstChild.nodeValue);
+		}
+	}
 };
 function signin(){
 	var form = document.createElement("form");
@@ -32,11 +46,16 @@ function signout(){
 	var form = document.createElement("form");
     form.setAttribute("charset", "UTF-8");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "index.php");
+    form.setAttribute("action", "sign/session.php");
     var input = document.createElement("input");
     input.setAttribute("type","hidden");
     input.setAttribute("name","sign");
     input.setAttribute("value","no");
+    form.appendChild(input);
+    var input = document.createElement("input");
+    input.setAttribute("type","hidden");
+    input.setAttribute("name","state");
+    input.setAttribute("value","sign");
     form.appendChild(input);
     document.body.appendChild(form);
     form.submit();

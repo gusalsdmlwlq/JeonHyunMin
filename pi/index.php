@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,26 +11,24 @@
 </head>
 <body>
 	<header>
-	<?php
-		if($_POST["sign"]=="yes"){
-			print("<button id='signout'>Sign out</button>");
-			$user = "<div id='hello'>안녕하세요. ".$_POST["id"]."(".$_POST["name"].")님</div>";
-			print($user);
-		}
-		else{
-			print("<button id='signup'>Sign up</button><button id='signin'>Sign in</button>");
-		}
-	?>
+	<?php if(isset($_SESSION["id"])){ ?>
+			<button id='signout'>Sign out</button>
+			<div id='hello'>안녕하세요. <?= $_SESSION["name"]; ?>님</div>
+	<?php } else{ ?>
+			<button id='signup'>Sign up</button><button id='signin'>Sign in</button>
+	<?php } ?>
 	<div id="menu">Menu</div>
 	<h1>RaspberryPi</h1>
 	</header>
 	<aside>
 		<nav id="nav" class="close">
 			<div class="close" id="list" onclick="list()">List</div>
-			<div class="close" id="write" onclick="write()">Write</div>
+			<div class="close" id="write" onclick="writetext()">Write</div>
 		</nav>
 	</aside>
 	<section id="section">
 	</section>
+	<div id="state"><?= $_GET["state"]; ?></div>
+	<div id="content_id"><?= $_GET["content_id"]; ?></div>
 </body>
 </html>
