@@ -60,7 +60,7 @@ A:hover {text-decoration:none; color:'ff9900'}
   calStr+="<td align=center><font size='5'>"
   }
 var days = year + "." + (month+1) + "." + dayCount
-calStr += "<a href='file:///C:/Users/jeon/noteapp/public/notelist.html?"+days+"'>" // 링크설정
+calStr += "<a href='notelist.html?"+days+"'>" // 링크설정
   calStr+=dayCount++   // 날짜
   calStr+="</a>"
 if (dayCount == nowd && month == now.getMonth() && year == 2017) { //오늘 날짜
@@ -84,12 +84,12 @@ if (dayCount == nowd && month == now.getMonth() && year == 2017) { //오늘 날�
 <script language="JavaScript" type="text/JavaScript">
     showCalendar(nowd, nowm, nowy);
 </script>
-    <form action="file:///C:/Users/jeon/noteapp/public/searchlist.html" method="GET" name="" accept-charset="utf-8">
+    <form action="searchlist.html" method="GET" name="" accept-charset="utf-8">
         <input type="text" size="49" name="search" border="5" id="searchwindow" value="">
         <box><input type="submit" value="검색"></box>
     </form>
     <br>
     <br>
-    <box1><a href='file:///C:/Users/jeon/noteapp/public/lunch.html'>점심 메뉴 뽑기</box1>
+    <box1><a href='lunch.html'>점심 메뉴 뽑기</box1>
 </body>
 </html>
