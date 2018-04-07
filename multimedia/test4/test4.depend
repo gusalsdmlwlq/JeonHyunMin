@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1522831384 source:c:\users\jeon\jhm\test4\main.cpp
+	<opencv2/highgui/highgui.hpp>
+	<iostream>
+	<opencv2/opencv.hpp>
+	"opencv/cv.h"
+	"opencv/highgui.h"
+	<stdio.h>
+	<stdlib.h>
+	"opencv2/imgproc/imgproc.hpp"
+
