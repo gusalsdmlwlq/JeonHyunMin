@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1522556423 source:c:\users\jeon\jhm\hw\main.cpp
-	<opencv2/highgui/highgui.hpp>
-	<iostream>
-	<opencv2/opencv.hpp>
-	"opencv/cv.h"
-	"opencv/highgui.h"
-
