@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-char * res[100];
 char ** split(char * str,char * del){
     char strs[100];
+    static char * res[100];
     int count = 0;
     strcpy(strs,str);
     res[count] = strtok(strs,del);
