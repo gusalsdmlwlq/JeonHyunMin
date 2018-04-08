@@ -11,7 +11,8 @@
 
 void req_handler(int client_sock, struct sockaddr_in * client_addr, socklen_t client_addr_len,char req[]);
 char *content_type(char *file);
-
+char ** split(char * str,char * del);
+char * res[100];
 int main(int argc, char *argv[])
 {
 	int serv_sock; //서버 소켓
@@ -143,4 +144,18 @@ char* content_type(char* file) //파일이름을 인자로 받아 확장자를 �
 		return "audio/mpeg3";
 	else
 		return "text/html";
+}
+
+char ** split(char * str,char * del){
+    char strs[100];
+    int count = 0;
+    strcpy(strs,str);
+    res[count] = strtok(strs,del);
+    while(1){
+        count++;
+        if((res[count]=strtok(NULL,del))==NULL){
+                break;
+        }
+    }
+    return res;
 }
