@@ -13,13 +13,14 @@ int main(){
 	char cwd[bufsize]; //현재 디렉토리 저장 버퍼
 	pid_t pid;
 	int i;
-	char * argv[maxline]; //exec로 실행할 벡터 
+	char * argv[maxline]; //exec로 실행할 벡터
 	char * str;
 	int status;
 	int fd[2]; //pipe
 	char * cmd[10]; //pipe로 나누는 명령어 벡터
 	int pipes=0; //pipe로 나누는 명령어 개수
-	
+	char cd[100];	
+
 	while(1){
 		getcwd(cwd,bufsize);
 		printf("Shell > %s > ",cwd);
@@ -30,10 +31,11 @@ int main(){
 		}
 		else is_background = 0;
 		
+		strcpy(cd,input);
 		if(strcmp(input,"exit")==0) exit(1); //exit를 입력하면 종료
-
+		else if(strcmp(strtok(cd," "),"cd")==0) chdir(strtok(NULL," ")); //cd
 		//shell fork
-		if((pid=fork()) == 0){
+		else if((pid=fork()) == 0){
 			//파이프로 나눔
 			for(int j=0; j<10; j++) cmd[j] = (char*)malloc(sizeof(char*));
 			cmd[pipes] = strtok(input,"|");
@@ -93,5 +95,6 @@ int main(){
 				printf("child %d exe in background\n",pid);
 			}
 		}
+
 	}
 }
