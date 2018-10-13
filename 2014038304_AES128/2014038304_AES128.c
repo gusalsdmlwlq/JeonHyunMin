@@ -114,7 +114,7 @@ BYTE trans(BYTE mc, BYTE input) {
 
 void round(BYTE * rkey,BYTE * exkey,int index){
 	int i;
-	for(i=0; i<KEY_SIZE; i++){
+	for(i=0; i<starw_SIZE; i++){
 		rkey[i] = exkey[index+i];
 	}
 }
@@ -175,22 +175,22 @@ BYTE* shiftRows(BYTE *starw, int mode){
 
 BYTE* mixColumns(BYTE *starw, int mode){    
 	int i,j;
-	BYTE temp[KEY_SIZE];
+	BYTE temp[starw_SIZE];
 	BYTE tem=0;
     switch(mode){
         case ENC:
-			for(i=0; i<KEY_SIZE; i++){
+			for(i=0; i<starw_SIZE; i++){
 				tem=0;
-				for(j=0; j<KEY_SIZE/4; j++){
+				for(j=0; j<4; j++){
 					tem = tem^trans(mc[(i%4)*4+j],starw[(i/4)*4+j]);
 				}
 				temp[i] = tem;
 			}
             break;
         case DEC:
-			for(i=0; i<KEY_SIZE; i++){
+			for(i=0; i<starw_SIZE; i++){
 				tem=0;
-				for(j=0; j<KEY_SIZE/4; j++){
+				for(j=0; j<4; j++){
 					tem = tem^trans(i_mc[(i%4)*4+j],starw[(i/4)*4+j]);
 				}
 				temp[i] = tem;
@@ -200,13 +200,13 @@ BYTE* mixColumns(BYTE *starw, int mode){
             fprintf(stderr, "Invalid mode!\n");
             exit(1);
     }
-	memcpy(starw,temp,sizeof(BYTE)*KEY_SIZE);
+	memcpy(starw,temp,sizeof(BYTE)*starw_SIZE);
     return starw;
 }
 
 BYTE* addRoundKey(BYTE *starw, BYTE *rKey){
 	int i;
-	for(i=0; i<KEY_SIZE; i++){
+	for(i=0; i<starw_SIZE; i++){
 		starw[i] = starw[i]^rKey[i];
 	}
     return starw;
