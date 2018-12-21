@@ -1,1 +1,1 @@
-SVM classifier in MNIST data set
+# SVM classifier in MNIST data set
