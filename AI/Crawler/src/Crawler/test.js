@@ -1,9 +1,12 @@
 const puppeteer = require('puppeteer');
-
+const fs = require('fs');
+var result_text = "";
 function printarray(array){
 	for(var i=0; i<array.length; i++){
 		if(typeof(array[i]) == "string") process.stdout.write(array[i].replace(/\n/gi, " ")+"\n");
 		else process.stdout.write(""+array[i]+"\n");
+		result_text += array[i];
+		result_text += "\r\n";
 	}
 }
 
@@ -19,12 +22,17 @@ function show(array){
 
 async function parse(url){
 	const browser = await puppeteer.launch({
+		headless: false,
 	    args: ["--no-sandbox", "--disable-web-security", "--user-data-dir=data", '--enable-features=NetworkService']
 	});
 	const page = await browser.newPage();
 	await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36");
-	await page.goto(url);
-	await page.waitFor(1000);
+	page.goto(url);
+	await Promise.race([
+        page.waitForNavigation({waitUntil: 'domcontentloaded'}),
+        page.waitForNavigation({waitUntil: 'load'})
+    ]);
+	//await page.waitFor(3000);
 	const nodes = await page.evaluate((url) => {
 		var bodywidth = document.body.scrollWidth;
 		var bodyheight = document.body.scrollHeight;
@@ -141,6 +149,7 @@ async function parse(url){
 	await show(nodes);
 	await process.stdout.write(""+nodes[nodes.length-2]+"\n");
 	await process.stdout.write(""+nodes[nodes.length-1]+"\n");
+	await fs.writeFileSync("test.txt",'\ufeff' + result_text + nodes[nodes.length-2] + "\r\n" + nodes[nodes.length-1], {encoding: 'utf8'});
 }
 
 process.stdin.setEncoding("utf-8");
