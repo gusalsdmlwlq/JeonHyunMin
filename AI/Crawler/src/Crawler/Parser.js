@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+//var url = process.argv[2];
+
 function printarray(array){
 	for(var i=0; i<array.length; i++){
 		if(typeof(array[i]) == "string") process.stdout.write(array[i].replace(/\n/gi, " ")+"\n");
@@ -19,12 +21,12 @@ function show(array){
 
 async function parse(url){
 	const browser = await puppeteer.launch({
-	    args: ["--no-sandbox", "--disable-web-security", "--user-data-dir=data", '--enable-features=NetworkService']
+	    args: ["--no-sandbox", "--disable-web-security", "--user-data-dir=data", '--enable-features=NetworkService', '--start-fullscreen',  '--window-size=1920,1080']
 	});
 	const page = await browser.newPage();
 	await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36");
 	await page.goto(url);
-	await page.waitFor(1000);
+	await page.waitFor(3000);
 	const nodes = await page.evaluate((url) => {
 		var bodywidth = document.body.scrollWidth;
 		var bodyheight = document.body.scrollHeight;
@@ -45,24 +47,27 @@ async function parse(url){
 		}
 		function isad(link){
 			if(link == "#") return false;
+			if(link[0] == "/") return false;
 			let link_machine = link.split('.')[0].split('/')[2];
 			let link_domain = link.split('.')[1];
 			let url_machine = url.split('.')[0].split('/')[2];
 			let url_domain = url.split('.')[1];
 			if(link_domain != url_domain || link_machine != url_machine) return true;
+			else return false;
 		}
-		function recur(root, indent, ad){
+		function recur(root, indent, ad, is_link){
 			let contents = root.childNodes;
 			let result = new Array();
 			let attributes = new Array(); //(type, content, x, y, w, h, fontsize, bg_color, indent) : node의 attribute
 			let childindent = indent;
+			let islink = is_link;
 			const a_tag_count = 5;
 			for(var i=0; i<contents.length; i++){
 				attributes = new Array();
 				let node = contents[i];
 				if(["SCRIPT", "#comment", "STYLE", "NOSCRIPT"].includes(node.nodeName)) continue;
 				if(node.nodeValue != null){
-					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text"){ //text node 체크
+					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && ad == false){ //text node 체크
 						attributes.push("text");
 						attributes.push(node.nodeValue.trim());
 						if(node.parentNode.innerHTML != node.nodeValue){ //태그가 없는 text node 체크
@@ -77,12 +82,12 @@ async function parse(url){
 						node = node.parentNode;
 						let x = getpos(node).x + node.offsetWidth / 2;
 						let y = getpos(node).y + node.clientTop + node.offsetHeight / 2;
-						if(x == 0 && y == 0) continue;
+						if(x <= 0 || y <= 0) continue;
 						attributes.push(x);
 						attributes.push(y);
 						let w = node.offsetWidth;
 						let h = node.offsetHeight;
-						if(w == 0 || h == 0) continue;
+						if(w <= 1 || h <= 1) continue;
 						attributes.push(w);
 						attributes.push(h);
 						let size = window.getComputedStyle(node,null).getPropertyValue('font-size');
@@ -92,6 +97,7 @@ async function parse(url){
 						let bgcolor = window.getComputedStyle(node,null).getPropertyValue('background-color');
 						attributes.push(bgcolor);
 						attributes.push(childindent);
+						attributes.push(islink);
 					}
 				}
 				else{
@@ -108,26 +114,30 @@ async function parse(url){
 							attributes.push(node.src);
 							let x = getpos(node).x + node.offsetWidth / 2;
 							let y = getpos(node).y + node.offsetHeight / 2;
-							if(x == 0 && y == 0) continue;
+							if(x <= 0 || y <= 0) continue;
 							attributes.push(x);
 							attributes.push(y);
 							let w = node.offsetWidth;
 							let h = node.offsetHeight;
-							if(w == 0 || h == 0) continue;
+							if(w <= 1 || h <= 1) continue;
 							attributes.push(w);
 							attributes.push(h);
 							attributes.push(0);
 							attributes.push("rgba(0, 0, 0, 0)");
 							attributes.push(childindent);
+							attributes.push(islink);
 						}
 					}
 					if(node.childNodes != null && position != "fixed" && (z_index == "auto" || z_index < 10000)){
-						let is_ad = false;
+						let is_ad = ad;
 						if(node.nodeName == "A"){
 							let href = node.getAttribute("href");
-							if(href == null || isad(href) == true) is_ad = true;
+							if(href != "#") is_ad = true;
+							//if(href == null || isad(href) == true) is_ad = true;
+							if(href != "#") islink = 1;
 						}
-						result.push(recur(node,indent+1,is_ad));
+						result.push(recur(node,indent+1,is_ad,islink));
+						islink = is_link;
 					}
 				}
 				result.push(attributes);
@@ -135,14 +145,14 @@ async function parse(url){
 			return result;
 		}
 		body = document.querySelector("body");
-		return [recur(body,0), bodywidth, bodyheight];
+		return [recur(body,0,false,0), bodywidth, bodyheight];
 	}, url);
 	await browser.close();
 	await show(nodes);
 	await process.stdout.write(""+nodes[nodes.length-2]+"\n");
 	await process.stdout.write(""+nodes[nodes.length-1]+"\n");
 }
-
+//parse(url);
 process.stdin.setEncoding("utf-8");
 process.stdout.setEncoding("utf-8");
 process.stdin.on('readable', () => {
