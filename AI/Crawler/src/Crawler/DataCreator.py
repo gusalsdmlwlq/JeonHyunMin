@@ -15,9 +15,9 @@ class DataCreator:
         for url in urls:
             self.__BlockList = self.getblocklist(url)
             for block in self.__BlockList:
-                newblock = pd.DataFrame([[block.x, block.y, block.w, block.h]])
+                newblock = pd.DataFrame([[block.content, block.x, block.y, block.w, block.h]])
                 newcsv = pd.concat([newcsv, newblock])
-            newcsv = pd.concat([newcsv, pd.DataFrame([[0, 0, 0, 0]])])
+            newcsv = pd.concat([newcsv, pd.DataFrame([[0, 0, 0, 0, 0]])])
         newcsv.to_csv("unlabeled.csv", index=False, header=False)
 
 creator = DataCreator()
