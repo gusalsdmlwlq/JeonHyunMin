@@ -34,7 +34,6 @@ async function parse(url){
 			var position = new Object;
 			position.x = 0;
 			position.y = 0;
-			position.w = node.offsetWidth;
 			if(node){
 				position.x = node.offsetLeft + node.clientLeft;
 				position.y = node.offsetTop + node.clientTop;
@@ -42,7 +41,6 @@ async function parse(url){
 					var parentpos = getpos(node.offsetParent);
 					position.x += parentpos.x;
 					position.y += parentpos.y;
-					if(position.x+position.w/2 >= parentpos.x+parentpos.w/2 && node.nodeName == "SPAN") position.x = parentpos.x;
 				}
 			}
 			return position;
