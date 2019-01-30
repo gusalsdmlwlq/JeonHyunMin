@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-//var url = process.argv[2];
+var url = process.argv[2];
 
 function printarray(array){
 	for(var i=0; i<array.length; i++){
@@ -30,10 +30,12 @@ async function parse(url){
 	const nodes = await page.evaluate((url) => {
 		var bodywidth = document.body.scrollWidth;
 		var bodyheight = document.body.scrollHeight;
+		var y_max = 0;
 		function getpos(node) {
 			var position = new Object;
 			position.x = 0;
 			position.y = 0;
+			position.w = node.offsetWidth;
 			if(node){
 				position.x = node.offsetLeft + node.clientLeft;
 				position.y = node.offsetTop + node.clientTop;
@@ -41,6 +43,7 @@ async function parse(url){
 					var parentpos = getpos(node.offsetParent);
 					position.x += parentpos.x;
 					position.y += parentpos.y;
+					if(position.x+position.w >= parentpos.x+parentpos.w && node.nodeName == "SPAN") position.x = parentpos.x;
 				}
 			}
 			return position;
@@ -55,19 +58,21 @@ async function parse(url){
 			if(link_domain != url_domain || link_machine != url_machine) return true;
 			else return false;
 		}
-		function recur(root, indent, ad, is_link){
+		function recur(root, indent, ad, is_link, framewidth, frameheight){
 			let contents = root.childNodes;
 			let result = new Array();
 			let attributes = new Array(); //(type, content, x, y, w, h, fontsize, bg_color, indent) : node의 attribute
 			let childindent = indent;
 			let islink = is_link;
+			let newframewidth = framewidth;
+			let newframeheight = frameheight;
 			const a_tag_count = 5;
 			for(var i=0; i<contents.length; i++){
 				attributes = new Array();
 				let node = contents[i];
 				if(["SCRIPT", "#comment", "STYLE", "NOSCRIPT"].includes(node.nodeName)) continue;
 				if(node.nodeValue != null){
-					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && ad == false){ //text node 체크
+					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && islink == false){ //text node 체크
 						attributes.push("text");
 						attributes.push(node.nodeValue.trim());
 						if(node.parentNode.innerHTML != node.nodeValue){ //태그가 없는 text node 체크
@@ -80,14 +85,15 @@ async function parse(url){
 							childindent += 1;
 						}
 						node = node.parentNode;
-						let x = getpos(node).x + node.offsetWidth / 2;
-						let y = getpos(node).y + node.clientTop + node.offsetHeight / 2;
+						let x = getpos(node).x + node.offsetWidth / 2 + framewidth;
+						let y = getpos(node).y + node.clientTop + node.offsetHeight / 2 + frameheight;
 						if(x <= 0 || y <= 0) continue;
 						attributes.push(x);
 						attributes.push(y);
 						let w = node.offsetWidth;
 						let h = node.offsetHeight;
-						if(w <= 1 || h <= 1) continue;
+						if(w <= 1.0 || h <= 1.0) continue;
+						if(y + h/2 > y_max) y_max = y + h/2;
 						attributes.push(w);
 						attributes.push(h);
 						let size = window.getComputedStyle(node,null).getPropertyValue('font-size');
@@ -105,8 +111,14 @@ async function parse(url){
 					let position = window.getComputedStyle(node,null).getPropertyValue('position');
 					let z_index = window.getComputedStyle(node,null).getPropertyValue('z-index');
 					if(node.nodeName == "IFRAME"){
+						newframewidth = framewidth + getpos(node).x;
+						newframeheight = frameheight + getpos(node).y;
 						node = node.contentWindow.document.body;
-						if(node == null) continue;
+						if(node == null){
+							newframewidth = framewidth;
+							newframeheight = frameheight;
+							continue;
+						}
 					}
 					else if(node.nodeName == "IMG"){ //img node 체크
 						if(ad == false){
@@ -133,11 +145,12 @@ async function parse(url){
 						if(node.nodeName == "A"){
 							let href = node.getAttribute("href");
 							if(href != "#") is_ad = true;
-							//if(href == null || isad(href) == true) is_ad = true;
-							if(href != "#") islink = 1;
+							if(href == null || isad(href) == true) islink = true;
 						}
-						result.push(recur(node,indent+1,is_ad,islink));
+						result.push(recur(node,indent+1,is_ad,islink,newframewidth,newframeheight));
 						islink = is_link;
+						newframeheight = frameheight;
+						newframewidth = framewidth;
 					}
 				}
 				result.push(attributes);
@@ -145,19 +158,20 @@ async function parse(url){
 			return result;
 		}
 		body = document.querySelector("body");
-		return [recur(body,0,false,0), bodywidth, bodyheight];
+		if(bodyheight <= 1000) return [recur(body,0,false,0,0,0), 1100, y_max];
+		return [recur(body,0,false,0,0,0), bodywidth, bodyheight];
 	}, url);
 	await browser.close();
 	await show(nodes);
 	await process.stdout.write(""+nodes[nodes.length-2]+"\n");
 	await process.stdout.write(""+nodes[nodes.length-1]+"\n");
 }
-//parse(url);
-process.stdin.setEncoding("utf-8");
-process.stdout.setEncoding("utf-8");
-process.stdin.on('readable', () => {
-	var url = process.stdin.read();
-	if(url){
-		parse(url);
-	}
-});
+parse(url);
+// process.stdin.setEncoding("utf-8");
+// process.stdout.setEncoding("utf-8");
+// process.stdin.on('readable', () => {
+// 	var url = process.stdin.read();
+// 	if(url){
+// 		parse(url);
+// 	}
+// });

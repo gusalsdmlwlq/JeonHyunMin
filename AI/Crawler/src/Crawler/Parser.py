@@ -26,6 +26,7 @@ class Parser:
     def makenode(self, node):
         newnode = Node.Node(node)
         self.__NodeList.append(newnode)
+        #print(node)
 
     def getnodelist(self):
         return self.__NodeList
@@ -39,3 +40,8 @@ class Parser:
     def seturl(self, url):
         self.__url = url
         self.__NodeList = []
+'''
+parser = Parser()
+parser.seturl("https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=103&oid=025&aid=0002880476")
+parser.parsehtml()
+'''

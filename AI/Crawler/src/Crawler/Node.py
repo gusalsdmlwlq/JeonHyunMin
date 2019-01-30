@@ -13,5 +13,5 @@ class Node:
         if node[6] == "null": self.fontsize = 0
         else: self.fontsize = float(node[6])
         self.bg_color = node[7]
-        self.intend = node[8]
+        self.indent = node[8]
         self.link = int(node[9])
