@@ -1,7 +1,7 @@
 import Parser
 import Block
 import Node
-
+import ContentExtractor
 
 class BlockMaker:
     def __init__(self):
@@ -63,7 +63,7 @@ class BlockMaker:
         if len(self.__nodeset) > 0:
             self.bindnodes(self.__nodeset)
             self.__nodeset.clear()
-        print(len(self.__BlockList))
+        #print(len(self.__BlockList))
         return self.__BlockList
 
     def bindnodes(self, nodelist):
@@ -107,7 +107,7 @@ class BlockMaker:
             block = Block.Block("text", content, x, y, w, h, fontsize)
         self.__BlockList.append(block)
         self.__nodeset.clear()
-        print(block.type, block.content, block.x, block.y, block.w, block.h, block.fontsize)
+        #print(block.type, block.content, block.x, block.y, block.w, block.h, block.fontsize)
         self.width = [0, self.w]
 
     def seturl(self, url):
@@ -118,6 +118,9 @@ class BlockMaker:
     def getnodelist(self):
         return self.__NodeList
 
-# blockmaker = BlockMaker()
-# blockmaker.seturl("https://blog.naver.com/228112lee?Redirect=Log&logNo=221448359851")
-# blockmaker.makeblock()
+blockmaker = BlockMaker()
+blockmaker.seturl("https://news.naver.com/main/ranking/read.nhn?mid=etc&sid1=111&rankingType=popular_day&oid=277&aid=0004405259&date=20190131&type=1&rankingSeq=2&rankingSectionId=105")
+blocklist = blockmaker.makeblock()
+extractor = ContentExtractor.ContentExtractor(2)
+extractor.setblocklist(blocklist)
+extractor.extractcontent()

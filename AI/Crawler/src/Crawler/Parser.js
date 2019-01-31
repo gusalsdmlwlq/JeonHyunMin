@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-var url = process.argv[2];
+//var url = process.argv[2];
 
 function printarray(array){
 	for(var i=0; i<array.length; i++){
@@ -43,7 +43,10 @@ async function parse(url){
 					var parentpos = getpos(node.offsetParent);
 					position.x += parentpos.x;
 					position.y += parentpos.y;
-					if(position.x+position.w >= parentpos.x+parentpos.w && node.nodeName == "SPAN") position.x = parentpos.x;
+					var parent_ = getpos(node.parentNode);
+					if(position.x+position.w > parent_.x+parent_.w && ["SPAN","EM", "B"].includes(node.nodeName)){
+						position.x = parent_.x;
+					}
 				}
 			}
 			return position;
@@ -64,12 +67,12 @@ async function parse(url){
 			let attributes = new Array(); //(type, content, x, y, w, h, fontsize, bg_color, indent) : node의 attribute
 			let childindent = indent;
 			let islink = is_link;
-			let newframewidth = framewidth;
-			let newframeheight = frameheight;
 			const a_tag_count = 5;
 			for(var i=0; i<contents.length; i++){
 				attributes = new Array();
 				let node = contents[i];
+				let newframewidth = framewidth;
+				let newframeheight = frameheight;
 				if(["SCRIPT", "#comment", "STYLE", "NOSCRIPT"].includes(node.nodeName)) continue;
 				if(node.nodeValue != null){
 					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && islink == false){ //text node 체크
@@ -87,7 +90,7 @@ async function parse(url){
 						node = node.parentNode;
 						let x = getpos(node).x + node.offsetWidth / 2 + framewidth;
 						let y = getpos(node).y + node.clientTop + node.offsetHeight / 2 + frameheight;
-						if(x <= 0 || y <= 0) continue;
+						if(x <= 0 || y <= 0 || x > bodywidth || y > bodyheight) continue;
 						attributes.push(x);
 						attributes.push(y);
 						let w = node.offsetWidth;
@@ -115,8 +118,6 @@ async function parse(url){
 						newframeheight = frameheight + getpos(node).y;
 						node = node.contentWindow.document.body;
 						if(node == null){
-							newframewidth = framewidth;
-							newframeheight = frameheight;
 							continue;
 						}
 					}
@@ -124,9 +125,9 @@ async function parse(url){
 						if(ad == false){
 							attributes.push("img");
 							attributes.push(node.src);
-							let x = getpos(node).x + node.offsetWidth / 2;
-							let y = getpos(node).y + node.offsetHeight / 2;
-							if(x <= 0 || y <= 0) continue;
+							let x = getpos(node).x + node.offsetWidth / 2 + framewidth;;
+							let y = getpos(node).y + node.offsetHeight / 2 + frameheight;
+							if(x <= 0 || y <= 0 || x > bodywidth || y > bodyheight) continue;
 							attributes.push(x);
 							attributes.push(y);
 							let w = node.offsetWidth;
@@ -149,8 +150,6 @@ async function parse(url){
 						}
 						result.push(recur(node,indent+1,is_ad,islink,newframewidth,newframeheight));
 						islink = is_link;
-						newframeheight = frameheight;
-						newframewidth = framewidth;
 					}
 				}
 				result.push(attributes);
@@ -158,7 +157,7 @@ async function parse(url){
 			return result;
 		}
 		body = document.querySelector("body");
-		if(bodyheight <= 1000) return [recur(body,0,false,0,0,0), 1100, y_max];
+		if(bodyheight <= 1000) return [recur(body,0,false,0,0,0), 1200, y_max];
 		return [recur(body,0,false,0,0,0), bodywidth, bodyheight];
 	}, url);
 	await browser.close();
@@ -166,12 +165,12 @@ async function parse(url){
 	await process.stdout.write(""+nodes[nodes.length-2]+"\n");
 	await process.stdout.write(""+nodes[nodes.length-1]+"\n");
 }
-parse(url);
-// process.stdin.setEncoding("utf-8");
-// process.stdout.setEncoding("utf-8");
-// process.stdin.on('readable', () => {
-// 	var url = process.stdin.read();
-// 	if(url){
-// 		parse(url);
-// 	}
-// });
+//parse(url);
+process.stdin.setEncoding("utf-8");
+process.stdout.setEncoding("utf-8");
+process.stdin.on('readable', () => {
+	var url = process.stdin.read();
+	if(url){
+		parse(url);
+	}
+});
