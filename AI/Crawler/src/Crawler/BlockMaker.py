@@ -3,6 +3,7 @@ import Block
 import Node
 import ContentExtractor
 
+
 class BlockMaker:
     def __init__(self):
         self.parser = Parser.Parser()
@@ -119,7 +120,7 @@ class BlockMaker:
         return self.__NodeList
 
 blockmaker = BlockMaker()
-blockmaker.seturl("https://news.naver.com/main/ranking/read.nhn?mid=etc&sid1=111&rankingType=popular_day&oid=277&aid=0004405259&date=20190131&type=1&rankingSeq=2&rankingSectionId=105")
+blockmaker.seturl("https://blog.naver.com/wlstngl/221456444824")
 blocklist = blockmaker.makeblock()
 extractor = ContentExtractor.ContentExtractor(2)
 extractor.setblocklist(blocklist)

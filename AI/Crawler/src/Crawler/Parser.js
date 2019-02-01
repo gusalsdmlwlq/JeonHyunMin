@@ -43,15 +43,15 @@ async function parse(url){
 					var parentpos = getpos(node.offsetParent);
 					position.x += parentpos.x;
 					position.y += parentpos.y;
-					var parent_ = getpos(node.parentNode);
-					if(position.x+position.w > parent_.x+parent_.w && ["SPAN","EM", "B"].includes(node.nodeName)){
-						position.x = parent_.x;
+					if(["SPAN","EM", "B"].includes(node.nodeName)){
+						var parent_ = getpos(node.parentNode);
+						if(position.x+position.w > parent_.x+parent_.w)  position.x = parent_.x;
 					}
 				}
 			}
 			return position;
 		}
-		function isad(link){
+		function checkad(link){
 			if(link == "#") return false;
 			if(link[0] == "/") return false;
 			let link_machine = link.split('.')[0].split('/')[2];
@@ -61,13 +61,12 @@ async function parse(url){
 			if(link_domain != url_domain || link_machine != url_machine) return true;
 			else return false;
 		}
-		function recur(root, indent, ad, is_link, framewidth, frameheight){
+		function recur(root, indent, is_link, is_ad, framewidth, frameheight){
 			let contents = root.childNodes;
 			let result = new Array();
 			let attributes = new Array(); //(type, content, x, y, w, h, fontsize, bg_color, indent) : node의 attribute
 			let childindent = indent;
-			let islink = is_link;
-			const a_tag_count = 5;
+			let isad = is_ad;
 			for(var i=0; i<contents.length; i++){
 				attributes = new Array();
 				let node = contents[i];
@@ -75,7 +74,7 @@ async function parse(url){
 				let newframeheight = frameheight;
 				if(["SCRIPT", "#comment", "STYLE", "NOSCRIPT"].includes(node.nodeName)) continue;
 				if(node.nodeValue != null){
-					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && islink == false){ //text node 체크
+					if(node.nodeValue.trim().length != 0 && node.nodeName == "#text" && isad == false){ //text node 체크
 						attributes.push("text");
 						attributes.push(node.nodeValue.trim());
 						if(node.parentNode.innerHTML != node.nodeValue){ //태그가 없는 text node 체크
@@ -90,7 +89,7 @@ async function parse(url){
 						node = node.parentNode;
 						let x = getpos(node).x + node.offsetWidth / 2 + framewidth;
 						let y = getpos(node).y + node.clientTop + node.offsetHeight / 2 + frameheight;
-						if(x <= 0 || y <= 0 || x > bodywidth || y > bodyheight) continue;
+						if(x <= 0 || y <= 0) continue;
 						attributes.push(x);
 						attributes.push(y);
 						let w = node.offsetWidth;
@@ -106,7 +105,6 @@ async function parse(url){
 						let bgcolor = window.getComputedStyle(node,null).getPropertyValue('background-color');
 						attributes.push(bgcolor);
 						attributes.push(childindent);
-						attributes.push(islink);
 					}
 				}
 				else{
@@ -122,12 +120,12 @@ async function parse(url){
 						}
 					}
 					else if(node.nodeName == "IMG"){ //img node 체크
-						if(ad == false){
+						if(is_link == false){
 							attributes.push("img");
 							attributes.push(node.src);
 							let x = getpos(node).x + node.offsetWidth / 2 + framewidth;;
 							let y = getpos(node).y + node.offsetHeight / 2 + frameheight;
-							if(x <= 0 || y <= 0 || x > bodywidth || y > bodyheight) continue;
+							if(x <= 0 || y <= 0) continue;
 							attributes.push(x);
 							attributes.push(y);
 							let w = node.offsetWidth;
@@ -138,18 +136,17 @@ async function parse(url){
 							attributes.push(0);
 							attributes.push("rgba(0, 0, 0, 0)");
 							attributes.push(childindent);
-							attributes.push(islink);
 						}
 					}
 					if(node.childNodes != null && position != "fixed" && (z_index == "auto" || z_index < 10000)){
-						let is_ad = ad;
+						let islink = is_link;
 						if(node.nodeName == "A"){
 							let href = node.getAttribute("href");
-							if(href != "#") is_ad = true;
-							if(href == null || isad(href) == true) islink = true;
+							if(href != "#") islink = true;
+							if(href == null || checkad(href) == true) isad = true;
 						}
-						result.push(recur(node,indent+1,is_ad,islink,newframewidth,newframeheight));
-						islink = is_link;
+						result.push(recur(node,indent+1,islink,isad,newframewidth,newframeheight));
+						isad = is_ad;
 					}
 				}
 				result.push(attributes);

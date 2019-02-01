@@ -1,6 +1,7 @@
 from sklearn.externals import joblib
 from sklearn.svm import SVC
 
+
 class ContentExtractor:
     def __init__(self, mode):
         self.mode = mode

@@ -16,10 +16,10 @@ class Parser:
         self.__height = result[len(result)-1]
         node = []
         for i in range(0, len(result)-2):
-            if i % 10 == 0:
+            if i % 9 == 0:
                 node.clear()
             node.append(result[i])
-            if i % 10 == 9:
+            if i % 9 == 8:
                 self.makenode(node)
 
 
